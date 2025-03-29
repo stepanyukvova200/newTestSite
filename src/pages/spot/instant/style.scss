@@ -1,0 +1,23 @@
+.instant-container {
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+
+  .instant-selling {
+    display: flex;
+    height: 120px;
+
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    background-color: rgb(16 23 31);
+  }
+
+  .instant-buying {
+    display: flex;
+    height: 120px;
+
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    background-color: rgb(46 60 77);
+  }
+}
