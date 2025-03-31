@@ -50,12 +50,28 @@ const Spot: React.FC = () => {
           </div>
         </div>
 
-        {(location.pathname === routes.spot_instant ||
-          location.pathname === '/' ||
-          location.pathname === routes.spot) && <Instant />}
-        {location.pathname === routes.spot_recurring && <Reccuring />}
-        {location.pathname === routes.spot_trigger && <Trigger />}
-      </div>
+                {(location.pathname === routes.spot_instant || location.pathname === '/' || location.pathname === routes.spot) && (
+                    <Instant />
+                )}
+                {location.pathname === routes.spot_recurring && (
+                    <Reccuring />
+                )}
+                {location.pathname === routes.spot_trigger && (
+                    <Trigger />
+                )}
+            </div>
+
+            <div className="spot-chart">
+                <div className="chart-btn-expand">Expand Chart</div>
+                <div className="chart-diagrams">
+                    <div className="diagram-container">
+                        1
+                    </div>
+                    <div className="diagram-container">
+                        2
+                    </div>
+                </div>
+            </div>
 
       <div className="spot-history">
         <div className="history-text">View History</div>

@@ -103,14 +103,6 @@
       justify-content: space-between;
       align-items: center;
 
-      .money-main {
-        display: flex;
-        font-size: 30px;
-
-        &.disabled {
-          display: none;
-        }
-      }
 
       .modal-dropdown {
         display: flex;
@@ -133,6 +125,40 @@
           border-radius: 100%;
         }
       }
+
+      .info-money {
+        display: flex;
+        height: 100%;
+        flex-direction: column;
+        justify-content: right;
+        align-items: flex-end;
+
+        .money-main {
+          width: 120px;
+          padding: 0;
+          text-align: right;
+          font-size: 30px;
+          border: none;
+          background: none;
+
+          &:focus {
+            outline: none;
+            border: none;
+          }
+
+          &.disabled {
+            display: none;
+          }
+        }
+
+        .secondary-money {
+          display: flex;
+          margin-top: auto;
+          justify-content: right;
+          font-weight: 600;
+          font-size: 12px;
+        }
+      }
     }
 
     .buying-info {
@@ -147,13 +173,6 @@
         font-weight: 600;
         font-size: 10px;
         cursor: help;
-      }
-
-      .secondary-money {
-        display: flex;
-        justify-content: right;
-        font-weight: 600;
-        font-size: 12px;
       }
     }
   }
