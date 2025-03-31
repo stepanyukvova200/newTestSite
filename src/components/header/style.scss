@@ -57,6 +57,14 @@
       justify-content: center;
       align-items: center;
       cursor: pointer;
+      transition: all 0.15s linear;
+
+      font-size: 14px;
+      font-weight: 600;
+
+      &:hover {
+        color: var(--color-green-text);
+      }
     }
   }
 
@@ -83,6 +91,14 @@
       border: 1px solid hsla(83, 81%, 73%, 0.5);
       --tw-bg-opacity: 1;
       background-color: rgb(69 93 101 / var(--tw-bg-opacity));
+
+      .icon-search {
+        fill: hsla(83, 81%, 73%, 0.5);
+
+        path {
+          fill: hsla(83, 81%, 73%, 0.5);
+        }
+      }
     }
 
     .search-text {
@@ -120,12 +136,12 @@
   width: 85px;
   height: 26px;
   padding: 4px 8px;
-  background-color: rgba(232, 249, 255, 0.05);
-  border: 1px solid rgba(232, 249, 255, 0.05);
+  background-color: transparent;
+  border: 1px solid rgba(232,249,255,.6);
   outline: none;
   transition: all 0.15s linear;
   cursor: pointer;
-  color: rgba(232, 249, 255, 0.6);
+  color: rgba(232,249,255,.6);;
 
   span {
     width: 16px;
