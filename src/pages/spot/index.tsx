@@ -38,7 +38,18 @@ const Spot: React.FC = () => {
                 {location.pathname === routes.spot_trigger && (
                     <Trigger />
                 )}
+            </div>
 
+            <div className="spot-chart">
+                <div className="chart-btn-expand">Expand Chart</div>
+                <div className="chart-diagrams">
+                    <div className="diagram-container">
+                        1
+                    </div>
+                    <div className="diagram-container">
+                        2
+                    </div>
+                </div>
             </div>
 
             <div className="spot-history">
