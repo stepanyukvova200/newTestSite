@@ -1,11 +1,14 @@
 .header-container {
+  box-sizing: border-box;
   display: flex;
   width: 100%;
   height: 50px;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
+  padding-inline: 10px;
 
-  color: rgba(232,249,255);
+  color: rgba(232, 249, 255);
   opacity: 1;
 
   .header-navigation {
@@ -15,7 +18,6 @@
     gap: 10px;
 
     .header-icon {
-
     }
 
     .navigation-link {
@@ -38,5 +40,32 @@
       align-items: center;
       cursor: pointer;
     }
+  }
+}
+
+.header-connect {
+  display: flex;
+  align-items: center;
+  background-color: rgba(232, 249, 255, 0.05);
+  border: 1px solid rgba(232, 249, 255, 0.05);
+  border-radius: 50px;
+  outline: none;
+  height: 38px;
+  width: auto;
+  padding: 12px 15px;
+  font-size: 12px;
+  transition: all 0.15s linear;
+  cursor: pointer;
+
+  span {
+    background: linear-gradient(247.44deg, #c7f284 13.88%, #00bef0 99.28%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  &:hover {
+    border: 1px solid hsla(83, 81%, 73%, 0.5);
+    --tw-bg-opacity: 1;
+    background-color: rgb(69 93 101 / var(--tw-bg-opacity));
   }
 }
