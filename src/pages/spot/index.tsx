@@ -23,7 +23,7 @@ const Spot: React.FC = () => {
           <div
             className={`spot-header-tab ${
               location.pathname === routes.spot_instant ||
-              location.pathname === '/' ||
+              location.pathname === '/newTestSite/' ||
               location.pathname === routes.spot
                 ? 'active'
                 : ''
