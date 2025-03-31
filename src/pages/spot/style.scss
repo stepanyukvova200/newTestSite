@@ -87,6 +87,7 @@
   height: 200px;
   margin-right: auto;
   margin-left: auto;
+  margin-bottom: 16px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -119,5 +120,20 @@
     &:hover {
       border-color: #c7f284;
     }
+  }
+}
+
+.talk-to-us {
+  position: absolute;
+  display: flex;
+  right: 12px;
+  bottom: 12px;
+  flex-direction: row;
+  gap: 8px;
+  color: hsla(0,0%,100%,.5);
+
+  .talk-to-us-text {
+    font-size: 12px;
+    font-weight: 600;
   }
 }
