@@ -30,7 +30,7 @@ const Header: React.FC<HeaderProps> = () => {
           className={`navigation-link ${
             location.pathname.includes(routes.trenches) ? 'active' : ''
           }`}
-          onClick={() => navigate(routes.trenches)}
+          onClick={() => {window.location.href = 'https://jup.ag/trenches?tab=trending';}}
         >
           Trenches
         </div>
@@ -38,7 +38,7 @@ const Header: React.FC<HeaderProps> = () => {
           className={`navigation-link ${
             location.pathname.includes(routes.perps) ? 'active' : ''
           }`}
-          onClick={() => navigate(routes.perps)}
+          onClick={() => {window.location.href = 'https://jup.ag/perps';}}
         >
           Perps
         </div>
@@ -60,7 +60,7 @@ const Header: React.FC<HeaderProps> = () => {
       </div>
 
       <div className="header-settings">
-        <button className="header-portfolio">
+        <button className="header-portfolio" onClick={() => {window.location.href = 'https://portfolio.jup.ag/';}}>
           <span>Portfolio</span>
           <svg
             width="16"
