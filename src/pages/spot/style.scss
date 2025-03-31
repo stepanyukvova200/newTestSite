@@ -8,7 +8,7 @@
   justify-content: center;
 
   background-color: rgb(35 47 61);
-  border-radius: 10px;
+  border-radius: 12px;
 
   .spot-header {
     display: flex;
@@ -26,6 +26,56 @@
       &.active {
         background-color: rgb(35 47 61);
       }
+    }
+
+    :first-child {
+      border-top-left-radius: 12px;
+    }
+
+    :last-child {
+      border-top-right-radius: 12px;
+    }
+  }
+}
+
+.spot-history {
+  display: flex;
+  width: 100%;
+  max-width: 512px;
+  height: 200px;
+  margin-right: auto;
+  margin-left: auto;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  border: 1px solid rgba(232,249,255,.05);
+  border-radius: 12px;
+
+  .history-text {
+    display: flex;
+    font-size: 14px;
+    color: rgba(232,249,255,.5);
+  }
+
+  .history-btn-connect {
+    display: flex;
+    width: 160px;
+    height: 40px;
+    margin-top: 8px;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    cursor: pointer;
+
+    font-size: 14px;
+    font-weight: 600;
+    color: #c7f284;
+    background-color: hsla(83,81%,73%,.1);
+
+    &:hover {
+      border-color: #c7f284;
     }
   }
 }

@@ -18,7 +18,7 @@ const Spot: React.FC = () => {
             <Header />
             <div className="spot-container">
                 <div className="spot-header">
-                    <div className={`spot-header-tab ${(location.pathname === routes.spot_instant || location.pathname === '/') ? "active" : ""}`} onClick={() => navigate(routes.spot_instant)}>
+                    <div className={`spot-header-tab ${(location.pathname === routes.spot_instant || location.pathname === '/' || location.pathname === routes.spot) ? "active" : ""}`} onClick={() => navigate(routes.spot_instant)}>
                         Instant
                     </div>
                     <div className={`spot-header-tab ${location.pathname === routes.spot_trigger ? "active" : ""}`} onClick={() => navigate(routes.spot_trigger)}>
@@ -29,7 +29,7 @@ const Spot: React.FC = () => {
                     </div>
                 </div>
 
-                {(location.pathname === routes.spot_instant || location.pathname === '/') && (
+                {(location.pathname === routes.spot_instant || location.pathname === '/' || location.pathname === routes.spot) && (
                     <Instant />
                 )}
                 {location.pathname === routes.spot_recurring && (
@@ -39,6 +39,11 @@ const Spot: React.FC = () => {
                     <Trigger />
                 )}
 
+            </div>
+
+            <div className="spot-history">
+                <div className="history-text">View History</div>
+                <div className="history-btn-connect">Connect</div>
             </div>
         </>
     );

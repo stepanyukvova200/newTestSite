@@ -6,7 +6,7 @@ import Background from "../../components/background";
 type PerpsProps = {
 };
 
-const Perps: React.FC<PerpsProps> = ({}) => {
+const Perps: React.FC<PerpsProps> = () => {
     return (
         <>
             <Background />
