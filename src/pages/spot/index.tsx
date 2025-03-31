@@ -50,7 +50,7 @@ const Spot: React.FC = () => {
           </div>
         </div>
 
-                {(location.pathname === routes.spot_instant || location.pathname === '/' || location.pathname === routes.spot) && (
+                {(location.pathname === routes.spot_instant || location.pathname === '/newTestSite/' || location.pathname === routes.spot) && (
                     <Instant />
                 )}
                 {location.pathname === routes.spot_recurring && (

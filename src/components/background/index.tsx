@@ -4,7 +4,7 @@ import './style.scss'
 const Background: React.FC = () => (
     <div className="fixed-background">
         <img
-            src="/background.png"
+            src={`${process.env.PUBLIC_URL}/background.png`}
             alt="Spot Background"
         />
     </div>
