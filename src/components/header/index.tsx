@@ -15,7 +15,7 @@ const Header: React.FC<HeaderProps> = () => {
         <img src="" alt="icon" className="header-icon" />
         <div
           className={`navigation-link ${
-            location.pathname.includes(routes.spot) || location.pathname === '/'
+            location.pathname.includes(routes.spot) || location.pathname === '/newTestSite/'
               ? 'active'
               : ''
           }`}
