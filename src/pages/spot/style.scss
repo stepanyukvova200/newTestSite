@@ -1,3 +1,73 @@
+.spot-carousel {
+  display: flex;
+  height: 38px;
+  width: 100%;
+  max-width: 512px;
+  margin: 50px auto 16px auto;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+
+  .carousel-text-container {
+    display: flex;
+    font-size: 12px;
+    color: #c7f284;
+    transition: all .15s linear;
+
+    &:hover {
+      color: hsla(83,81%,73%,.8);
+
+      svg {
+        path {
+          fill: hsla(83,81%,73%,.8);
+        }
+      }
+    }
+  }
+
+  .carousel-container {
+    flex: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+
+    .carousel-track {
+      display: flex;
+      gap: 10px;
+      white-space: nowrap;
+
+      .carousel-item {
+        display: inline-block;
+        padding: 10px 20px;
+        background: #3498db;
+        color: white;
+        border-radius: 5px;
+      }
+    }
+
+    .fade-left,
+    .fade-right {
+      position: absolute;
+      top: 0;
+      width: 50px;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .fade-left {
+      left: 0;
+      background: linear-gradient(to left, rgba(0, 0, 0, 0.5), transparent);
+    }
+
+    .fade-right {
+      right: 0;
+      background: linear-gradient(to left, rgba(0, 0, 0, 0.5), transparent);
+    }
+  }
+}
+
 .spot-container {
   display: flex;
   width: 100%;
