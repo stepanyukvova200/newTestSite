@@ -34,7 +34,7 @@ const Spot: React.FC = () => {
     <>
       <Background />
       <Header />
-      {/* <Aside /> */}
+       <Aside /> 
 
       <div className="spot-carousel">
         <div className="carousel-text-container">
@@ -141,7 +141,7 @@ const Spot: React.FC = () => {
             fill="hsla(0,0%,100%,.5)"></path>
         </svg>
         <div className="talk-to-us-text">Talk to us</div>
-      </div> */}
+      </div>
     </>
   )
 }

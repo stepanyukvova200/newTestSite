@@ -1,4 +1,5 @@
 import './style.scss'
+import {CloseIcon, QuickAccountIcon, QuickIcon} from "../icons";
 
 const Aside = () => {
   return (
@@ -13,12 +14,15 @@ const Aside = () => {
           <span className="aside__content-quick-account-new">new!</span>
           <div className="aside__content-quick-account-info">
             <div className="aside__content-quick-account-info-title">
+              <QuickIcon />
               Jupiter Quick Account
             </div>
             <div className="aside__content-quick-account-info-subtitle">
               Trade instantly without signing transactions!
             </div>
-            <div className="aside__content-quick-account-info-img">img</div>
+            <div className="aside__content-quick-account-info-img">
+              <QuickAccountIcon />
+            </div>
           </div>
         </button>
 
