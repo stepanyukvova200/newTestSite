@@ -15,7 +15,8 @@ const Header: React.FC<HeaderProps> = () => {
         <img src="" alt="icon" className="header-icon" />
         <div
           className={`navigation-link ${
-            location.pathname.includes(routes.spot) || location.pathname === '/newTestSite/'
+            location.pathname.includes(routes.spot) ||
+            location.pathname === '/newTestSite/'
               ? 'active'
               : ''
           }`}
@@ -53,7 +54,6 @@ const Header: React.FC<HeaderProps> = () => {
             viewBox="0 0 16 16"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            class=""
           >
             <path
               d="M4.5 11.5L11.5 4.5M11.5 4.5H5.5M11.5 4.5V10.5"
