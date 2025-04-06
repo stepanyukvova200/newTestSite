@@ -3,7 +3,7 @@
   height: 38px;
   width: 100%;
   max-width: 512px;
-  margin: 50px auto 16px auto;
+  margin: 64px auto 16px auto;
   flex-direction: row;
   justify-content: center;
   align-items: center;
@@ -13,6 +13,7 @@
   .carousel-text-container {
     display: flex;
     font-size: 12px;
+    gap: 2px;
     color: #c7f284;
     transition: all .15s linear;
 
@@ -32,6 +33,7 @@
     overflow: hidden;
     white-space: nowrap;
     position: relative;
+    mask-image: linear-gradient(to right, transparent 0%, rgb(0, 0, 0) 10%, rgb(0, 0, 0) 90%, transparent 100%);
 
     .carousel-track {
       display: flex;
@@ -39,11 +41,43 @@
       white-space: nowrap;
 
       .carousel-item {
-        display: inline-block;
-        padding: 10px 20px;
-        background: #3498db;
-        color: white;
-        border-radius: 5px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 4px;
+
+        .item-number {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          color: rgba(232,249,255,.3);
+          font-size: 10px;
+        }
+
+        .item-icon {
+          width: 18px;
+          height: 18px;
+          border-radius: 9999px;
+        }
+
+        .item-name {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          transition: all .15s linear;
+
+          color: rgba(232,249,255,.5);
+          font-size: 12px;
+          font-weight: 500;
+        }
+
+        &:hover {
+          .item-name {
+            color: rgb(232 249 255);
+          }
+        }
       }
     }
 
@@ -54,11 +88,12 @@
       width: 50px;
       height: 100%;
       pointer-events: none;
+      z-index: 1;
     }
 
     .fade-left {
       left: 0;
-      background: linear-gradient(to left, rgba(0, 0, 0, 0.5), transparent);
+      background: linear-gradient(to right, rgba(0, 0, 0, 0.5), transparent);
     }
 
     .fade-right {
@@ -73,28 +108,49 @@
   width: 100%;
   max-width: 512px;
   height: fit-content;
-  margin: 50px auto 16px auto;
+  margin: 0 auto 16px auto;
   flex-direction: column;
   justify-content: center;
 
   background-color: rgb(35 47 61);
-  border-radius: 12px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
 
   .spot-header {
     display: flex;
     width: 100%;
-    height: 50px;
+    height: 60px;
     flex-direction: row;
 
     .spot-header-tab {
       display: flex;
-      flex-grow: 1;
+      padding: 0 16px;
+      flex: 1;
       justify-content: center;
       align-items: center;
-      background-color: #131b24;
+      background-color: rgb(16 23 31);
+      cursor: pointer;
+      overflow: visible;
+      gap: 8px;
+      transition: all .15s linear;
+
+      font-weight: 600;
+      font-size: 14px;
+      color: rgba(232,249,255,.5);
+
+      svg {
+        border-radius: 0;
+      }
 
       &.active {
         background-color: rgb(35 47 61);
+        color: #c7f284;
+      }
+
+      &:hover {
+        color: #c7f284;
       }
     }
 
