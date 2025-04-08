@@ -7,23 +7,27 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding-inline: 16px;
+  padding: 0 20px;
 
-  color: rgba(232, 249, 255);
+  color: rgba(232,249,255,.75);
   opacity: 1;
 
   .header-navigation {
     display: flex;
     height: 100%;
     flex-direction: row;
-    gap: 12px;
-    margin-left: 10px;
+
+    :nth-child(3) {
+      padding: 0 8px !important;
+    }
 
     .header-logo {
       flex-direction: row;
+      padding: 0 10px 0 0 !important;
       gap: 10px;
 
       .logo-text {
+        color: rgba(232, 249, 255);
         font-size: 14px;
         font-weight: 600;
       }
@@ -37,7 +41,8 @@
     .navigation-link {
       display: flex;
       height: 100%;
-      width: 62px;
+      // width: 62px;
+      padding: 0 16px;
       justify-content: center;
       align-items: center;
       cursor: pointer;
@@ -49,11 +54,16 @@
         color: var(--color-green-text);
         border-bottom: 2px solid var(--color-green-text);
       }
+
+      &:hover {
+        color: var(--color-green-text);
+      }
     }
 
     .navigation-info {
       display: flex;
       height: 100%;
+      padding: 0 16px;
       justify-content: center;
       align-items: center;
       cursor: pointer;
@@ -71,7 +81,7 @@
   .header-search {
     position: absolute;
     display: flex;
-    width: 512px;
+    width: calc(512px - 26px);
     height: 38px;
     padding: 0 12px;
     left: 50%;
@@ -84,7 +94,7 @@
     background-color: rgba(232,249,255,.05);
 
     border-radius: 9999px;
-    border: 1px solid rgba(232,249,255,.05);
+    border: 1px solid transparent;
 
     &:hover {
       color: hsla(83, 81%, 73%, 0.5);
@@ -104,12 +114,16 @@
     .search-text {
       flex: 1;
       margin: 0 8px;
+      color: rgba(232,249,255,.35);
       font-size: 12px;
       font-weight: 500;
     }
 
     .search-slash {
+      display: flex;
+      height: 16px;
       padding: 2px 6px;
+      align-items: center;
 
       font-weight: 600;
       font-size: 10px;
@@ -133,19 +147,22 @@
   justify-content: space-between;
   gap: 4px;
   border-radius: 50px;
-  width: 85px;
+  width: 83px;
   height: 26px;
-  padding: 4px 8px;
+  padding: 0 8px;
   background-color: transparent;
   border: 1px solid rgba(232,249,255,.6);
   outline: none;
   transition: all 0.15s linear;
   cursor: pointer;
-  color: rgba(232,249,255,.6);;
+  color: rgba(232,249,255,.6);
+  font-size: 12px;
+  font-weight: 600;
 
   span {
     width: 16px;
     height: 16px;
+    margin-top: 2px;
     display: block;
   }
 
@@ -170,7 +187,7 @@
   width: 40px;
   height: 40px;
   background-color: rgba(232, 249, 255, 0.05);
-  border: 1px solid rgba(232, 249, 255, 0.05);
+  border: 0 solid rgba(232, 249, 255, 0.05);
   outline: none;
   transition: all 0.15s linear;
   cursor: pointer;
@@ -194,13 +211,14 @@
   display: flex;
   align-items: center;
   background-color: rgba(232, 249, 255, 0.05);
-  border: 1px solid rgba(232, 249, 255, 0.05);
+  border: 1px solid transparent;
   border-radius: 50px;
   outline: none;
-  height: 38px;
+  height: 40px;
   width: auto;
   padding: 12px 15px;
-  font-size: 12px;
+  font-size: 14px;
+  font-weight: 600;
   transition: all 0.15s linear;
   cursor: pointer;
 
