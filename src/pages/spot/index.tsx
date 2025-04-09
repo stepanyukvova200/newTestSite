@@ -73,21 +73,21 @@ const Spot: React.FC = () => {
 
   const [carouselData, setCarouselData] = useState([]);
 
-  useEffect(() => {
-    console.log("datapi");
-    axios.get('https://datapi.jup.ag/v1/pools/toptrending/24h')
-      .then(response => {
-        const top10 = response.data.pools.slice(0, 10);
-        setCarouselData(top10);
-      })
-      .catch(err => console.log(err));
+  // useEffect(() => {
+  //   console.log("datapi");
+  //   axios.get('https://datapi.jup.ag/v1/pools/toptrending/24h')
+  //     .then(response => {
+  //       const top10 = response.data.pools.slice(0, 10);
+  //       setCarouselData(top10);
+  //     })
+  //     .catch(err => console.log(err));
 
-    startAnimation();
-    return () => {
-      isRunningRef.current = false;
-      if (pauseTimeoutRef.current) clearTimeout(pauseTimeoutRef.current);
-    };
-  }, []);
+  //   startAnimation();
+  //   return () => {
+  //     isRunningRef.current = false;
+  //     if (pauseTimeoutRef.current) clearTimeout(pauseTimeoutRef.current);
+  //   };
+  // }, []);
 
   const stopAnimation = () => {
     isRunningRef.current = false; // Виключаємо анімацію
