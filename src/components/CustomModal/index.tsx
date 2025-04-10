@@ -14,12 +14,11 @@ export const CustomModal = ({
     <Dialog
       open={open}
       onClose={onClose}
-      fullWidth
-      maxWidth="md"
-      scroll="body"
       slotProps={{
         paper: {
           sx: {
+            boxSizing: 'border-box',
+            width: 'fit-content',
             height: '100vh',
             display: 'flex',
             flexDirection: 'column',
@@ -31,10 +30,7 @@ export const CustomModal = ({
     >
       <DialogContent
         sx={{
-          flexGrow: 1,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
+          width: 'fit-content',
         }}
       >
         {children}

@@ -4,6 +4,7 @@ import './style.scss'
 import { CustomModal } from '../../../components/CustomModal'
 import axios from 'axios'
 import { CoinsItem } from '../../../components/CoinItem'
+import CoinSearchItem from '../../../components/CoinSearchItem'
 
 async function getSolToUsdPrice(): Promise<number | null> {
   try {
@@ -342,6 +343,7 @@ const Instant: React.FC = () => {
                 count={item.baseAsset.organicScore.toFixed(0)}
                 fullName={item.baseAsset.name}
                 nameID={item.baseAsset.id}
+                // capital={1000}
               />
             )
           })}
