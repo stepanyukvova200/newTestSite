@@ -5,12 +5,12 @@ import Spot from "./pages/spot";
 // App.tsx
 
 const App: React.FC = () => {
-  const navigate = useNavigate();
+  /* const navigate = useNavigate();
   const location = useLocation();
 
   if (location.pathname === "/") {
     navigate("/newTestSite/");
-  }
+  } */
 
   return (
       <Router>
