@@ -1,17 +1,22 @@
 import React from "react";
-import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
+import {BrowserRouter as Router, Routes, Route, useNavigate, useLocation} from "react-router-dom";
 import Spot from "./pages/spot";
-import Trenches from "./pages/trenches";
-import Perps from "./pages/perps";
+
+// App.tsx
 
 const App: React.FC = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  if (location.pathname === "/") {
+    navigate("/newTestSite/");
+  }
+
   return (
       <Router>
         <Routes>
             <Route path="/newTestSite/" element={<Spot />}  />
-          <Route path="/newTestSite/spot/*" element={<Spot />} />
-          <Route path="/newTestSite/trenches" element={<Trenches />} />
-          <Route path="/newTestSite/perps" element={<Perps />} />
+            <Route path="/newTestSite/spot/*" element={<Spot />} />
         </Routes>
       </Router>
   );

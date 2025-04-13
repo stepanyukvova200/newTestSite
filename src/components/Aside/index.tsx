@@ -1,12 +1,85 @@
+import React from 'react'
 import { CloseIcon, QuickAccountIcon, QuickIcon } from '../icons'
+import { useAppKitWallet } from "@reown/appkit-wallet-button/react";
+import { SolanaAdapter } from "@reown/appkit-adapter-solana/react";
 import './style.scss'
+//import { useWallet } from '@reown/appkit/react'
 
-const Aside = () => {
+import {
+  PhantomWalletAdapter,
+  SolflareWalletAdapter,
+  //BackpackWalletAdapter,
+  CoinbaseWalletAdapter,
+  //MagicEdenWalletAdapter,
+  //ReownWalletAdapter,
+  TrustWalletAdapter,
+  LedgerWalletAdapter,
+  TrezorWalletAdapter,
+  //EthereumWalletAdapter,
+  Coin98WalletAdapter,
+  //TiplinkWalletAdapter,
+  BitgetWalletAdapter,
+  //JupiterWalletAdapter,
+} from "@solana/wallet-adapter-wallets";
+
+// 0. Set up Solana Adapter
+const solanaWeb3JsAdapter = new SolanaAdapter({
+  wallets: [
+    new PhantomWalletAdapter(),
+    new SolflareWalletAdapter(),
+    //new BackpackWalletAdapter(),
+    new CoinbaseWalletAdapter(),
+    //new MagicEdenWalletAdapter(),
+    //new ReownWalletAdapter(),
+    new TrustWalletAdapter(),
+    new LedgerWalletAdapter(),
+    new TrezorWalletAdapter(),
+    //new EthereumWalletAdapter(),
+    new Coin98WalletAdapter(),
+    //new TiplinkWalletAdapter(),
+    new BitgetWalletAdapter(),
+    //new JupiterWalletAdapter(),
+  ],
+});
+
+type AsideProps = {
+  isAsideOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+/* const wallets = [
+  'phantom', 'solflare', 'backpack', 'coinbase',
+  'magiceden', 'reown', 'trust', 'ledger',
+  'trezor', 'ethereum', 'coin98', 'tiplink',
+  'bitget', 'jupiter'
+] */
+
+const Aside: React.FC<AsideProps> = ({isAsideOpen}) => {
+  const { isReady, isPending, connect } = useAppKitWallet({
+    onSuccess() {
+      console.log('Connection successful!');
+    },
+    onError(error: any) {
+      console.error('Connection error:', error);
+    }
+  });
+
+/*  const handleConnect = (walletKey: keyof typeof solanaWeb3JsAdapter.wallets) => {
+    const selectedWallet = solanaWeb3JsAdapter.wallets[walletKey]; // Отримуємо адаптер для вибраного гаманця
+    connect(selectedWallet) // Підключаємо до цього гаманця
+      .then(() => {
+        console.log(`Connected to ${walletKey}`);
+      })
+      .catch((error) => {
+        console.error(`Failed to connect to ${walletKey}:`, error);
+      });
+  }; */
+
   return (
     <div className="aside">
       <div className="aside__background"></div>
       <div className="aside__content">
-        <button className='aside__close-btn'>
+        <appkit-button />
+        <button className='aside__close-btn' onClick={() => isAsideOpen(false)}>
           <CloseIcon />
         </button>
         <div className="aside__content-header">Connect</div>
@@ -30,7 +103,7 @@ const Aside = () => {
         </button>
         <div className="aside__content-top-wallets">
           <div className="aside__content-top-wallets-title">Top wallets</div>
-          <button className="aside__content-top-wallets-jupiter">
+          <button className="aside__content-top-wallets-jupiter" onClick={() => {}}>
             <img
               src={`${process.env.PUBLIC_URL}/walletImg/jupiter.webp`}
               alt=""

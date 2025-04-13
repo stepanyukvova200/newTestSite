@@ -48,7 +48,11 @@ async function getSolanaTokens() {
   console.log(data)
 }
 
-const Instant: React.FC = () => {
+type InstantProps = {
+  isAsideOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const Instant: React.FC<InstantProps> = ({isAsideOpen}) => {
   const [value, setValue] = useState<string>('')
   const [usdPrice, setUsdPrice] = useState<number | null>(null)
   const [convertedValue, setConvertedValue] = useState<string | null>(null)
@@ -325,7 +329,8 @@ const Instant: React.FC = () => {
 
         <div
           className="instant-connect"
-          onClick={() => connectToWallet(setWalletAddress)}
+          // onClick={() => connectToWallet(setWalletAddress)}
+          onClick={() => isAsideOpen(true)}
         >
           Connect
         </div>

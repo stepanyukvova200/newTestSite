@@ -3,9 +3,11 @@ import './style.scss'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { routes } from '../../constants/routes'
 
-type HeaderProps = {}
+type HeaderProps = {
+  isAsideOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-const Header: React.FC<HeaderProps> = () => {
+const Header: React.FC<HeaderProps> = ({isAsideOpen}) => {
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -94,7 +96,7 @@ const Header: React.FC<HeaderProps> = () => {
             </svg>
           </span>
         </button>
-        <button className="header-connect">
+        <button className="header-connect" onClick={() => isAsideOpen(true)}>
           <span>Connect</span>
         </button>
       </div>
