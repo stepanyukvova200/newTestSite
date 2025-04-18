@@ -5,10 +5,12 @@ export const CustomModal = ({
   children,
   open,
   onClose,
+  flag,
 }: {
   children: ReactNode
   open: boolean
   onClose: () => void
+  flag: 'buying' | 'selling' | null
 }) => {
   return (
     <Dialog

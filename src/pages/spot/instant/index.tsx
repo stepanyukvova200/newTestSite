@@ -5,6 +5,7 @@ import { CustomModal } from '../../../components/CustomModal'
 import axios from 'axios'
 import { CoinsItem } from '../../../components/CoinItem'
 import CoinSearchItem from '../../../components/CoinSearchItem'
+import { Token, useTokenStore } from '../../../store/useTokenStore'
 
 async function getSolToUsdPrice(): Promise<number | null> {
   try {
@@ -49,10 +50,10 @@ async function getSolanaTokens() {
 }
 
 type InstantProps = {
-  isAsideOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  isAsideOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const Instant: React.FC<InstantProps> = ({isAsideOpen}) => {
+const Instant: React.FC<InstantProps> = ({ isAsideOpen }) => {
   const [value, setValue] = useState<string>('')
   const [usdPrice, setUsdPrice] = useState<number | null>(null)
   const [convertedValue, setConvertedValue] = useState<string | null>(null)
@@ -61,6 +62,20 @@ const Instant: React.FC<InstantProps> = ({isAsideOpen}) => {
   const [isOn, setIsOn] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [data, setData] = useState([])
+  const [flag, setFlag] = useState<'selling' | 'buying' | null>(null)
+
+  const {
+    tokens,
+    fetchTokens,
+    selectedBuyingToken,
+    selectedSellingToken,
+    setSelectedBuyingToken,
+    setSelectedSellingToken,
+  } = useTokenStore()
+
+  useEffect(() => {
+    fetchTokens()
+  }, [])
 
   const handleOpen = () => setIsModalOpen(true)
   const handleClose = () => setIsModalOpen(false)
@@ -219,13 +234,19 @@ const Instant: React.FC<InstantProps> = ({isAsideOpen}) => {
         <div className={`instant-selling ${isSellingFucused ? 'active' : ''}`}>
           <div className="selling-text">Selling</div>
           <div className="selling-info">
-            <div className="modal-dropdown" onClick={handleOpen}>
+            <div
+              className="modal-dropdown"
+              onClick={() => {
+                setFlag('selling')
+                handleOpen()
+              }}
+            >
               <img
-                src={`${process.env.PUBLIC_URL}/image-icon.png`}
+                src={selectedSellingToken.icon}
                 alt="icon"
                 className="dropdown-icon"
               />
-              <div className="value-name">SOL</div>
+              <div className="value-name">{selectedSellingToken.symbol}</div>
               <svg
                 width="10"
                 height="6"
@@ -260,13 +281,19 @@ const Instant: React.FC<InstantProps> = ({isAsideOpen}) => {
           <div className="buying-text">Buying</div>
 
           <div className="info-money-container">
-            <div className="modal-dropdown" onClick={handleOpen}>
+            <div
+              className="modal-dropdown"
+              onClick={() => {
+                setFlag('buying')
+                handleOpen()
+              }}
+            >
               <img
-                src={`${process.env.PUBLIC_URL}/image-icon.png`}
+                src={selectedBuyingToken.icon}
                 alt="icon"
                 className="dropdown-icon"
               />
-              <div className="value-name">USDC</div>
+              <div className="value-name">{selectedBuyingToken.symbol}</div>
               <svg
                 width="10"
                 height="6"
@@ -336,18 +363,28 @@ const Instant: React.FC<InstantProps> = ({isAsideOpen}) => {
         </div>
       </div>
 
-      <CustomModal open={isModalOpen} onClose={handleClose}>
+      <CustomModal open={isModalOpen} onClose={handleClose} flag={flag}>
         <div className="coins">
-          {data.map((item: any) => {
+          {tokens.map((token: Token) => {
             return (
               <CoinsItem
-                img={item.baseAsset.icon}
-                name={item.baseAsset.symbol}
-                approved={true}
+                key={token.address}
+                onClick={() => {
+                  if (flag === 'selling') {
+                    setSelectedSellingToken(token)
+                    handleClose()
+                  } else if (flag === 'buying') {
+                    setSelectedBuyingToken(token)
+                    handleClose()
+                  }
+                }}
+                img={token.icon}
+                name={token.symbol}
+                approved={token.tags.includes('verified')}
                 active={true}
-                count={item.baseAsset.organicScore.toFixed(0)}
-                fullName={item.baseAsset.name}
-                nameID={item.baseAsset.id}
+                count={+token.organicScore.toFixed(0)}
+                fullName={token.name}
+                nameID={token.address}
                 // capital={1000}
               />
             )

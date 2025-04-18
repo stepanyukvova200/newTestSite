@@ -12,6 +12,12 @@ interface Coin {
   nameID: string
   LST?: string
   desc?: string
+  onClick: () => void
+}
+
+const shorter = (str: string) => {
+  if (str.length < 8) return str
+  return `${str.slice(0, 4)}...${str.slice(-4)}`
 }
 
 export const CoinsItem: FC<Coin> = ({
@@ -24,9 +30,10 @@ export const CoinsItem: FC<Coin> = ({
   nameID,
   LST,
   desc,
+  onClick,
 }) => {
   return (
-    <div className="coin">
+    <div className="coin" onClick={onClick}>
       <img className="coin__img" src={img} alt="token" />
       <div className="coin__data">
         <div className="coin__header">
@@ -40,7 +47,7 @@ export const CoinsItem: FC<Coin> = ({
           </div>
         </div>
         <div className="coin__full-name">{fullName}</div>
-        <div className="coin__name-id">{nameID}</div>
+        <div className="coin__name-id">{shorter(nameID)}</div>
       </div>
 
       {LST && <div className="coin__lts">{LST}</div>}
