@@ -3,9 +3,9 @@ import { CloseIcon, QuickAccountIcon, QuickIcon } from '../icons'
 import { useAppKitWallet } from "@reown/appkit-wallet-button/react";
 import { SolanaAdapter } from "@reown/appkit-adapter-solana/react";
 import './style.scss'
-//import { useWallet } from '@reown/appkit/react'
 
-import {
+
+/* import {
   PhantomWalletAdapter,
   SolflareWalletAdapter,
   //BackpackWalletAdapter,
@@ -40,7 +40,7 @@ const solanaWeb3JsAdapter = new SolanaAdapter({
     new BitgetWalletAdapter(),
     //new JupiterWalletAdapter(),
   ],
-});
+}); */
 
 type AsideProps = {
   isAsideOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -54,15 +54,6 @@ type AsideProps = {
 ] */
 
 const Aside: React.FC<AsideProps> = ({isAsideOpen}) => {
-  const { isReady, isPending, connect } = useAppKitWallet({
-    onSuccess() {
-      console.log('Connection successful!');
-    },
-    onError(error: any) {
-      console.error('Connection error:', error);
-    }
-  });
-
 /*  const handleConnect = (walletKey: keyof typeof solanaWeb3JsAdapter.wallets) => {
     const selectedWallet = solanaWeb3JsAdapter.wallets[walletKey]; // Отримуємо адаптер для вибраного гаманця
     connect(selectedWallet) // Підключаємо до цього гаманця

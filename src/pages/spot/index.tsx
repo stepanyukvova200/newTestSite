@@ -10,9 +10,24 @@ import Trigger from './trigger'
 import {motion, useAnimation} from "framer-motion";
 import axios from 'axios';
 import Aside from '../../components/Aside'
+import Chart from './chart'
+import Flow from './flow'
+
+type Bar = {
+  o: number;
+  h: number;
+  l: number;
+  c: number;
+  v: number;
+  t: number;
+};
+
+type Props = {
+  bars: Bar[];
+};
 
 const Spot: React.FC = () => {
-
+  const [bars, setBars] = useState<Bar[]>([]);
   const location = useLocation()
   const navigate = useNavigate()
 
@@ -87,6 +102,18 @@ const Spot: React.FC = () => {
       isRunningRef.current = false;
       if (pauseTimeoutRef.current) clearTimeout(pauseTimeoutRef.current);
     };
+  }, []);
+
+  useEffect(() => {
+    axios.get('https://fe-api.jup.ag/api/v1/charts/9BB6NFEcjBCtnNLFko2FqVQBq8HHM13kCyYcdQbgpump?type=15m&time_from=1744727504&time_to=1744813904')
+      .then(response => {
+        const currentBars: Bar[] = response.data.bars;
+        console.log("chart");
+        console.log(response.data.bars);
+        setBars(currentBars);
+      })
+      .catch(err => console.log(err));
+
   }, []);
 
   const stopAnimation = () => {
@@ -231,7 +258,9 @@ const Spot: React.FC = () => {
       <div className="spot-chart">
         <div className="chart-btn-expand">Expand Chart</div>
         <div className="chart-diagrams">
-          <div className="diagram-container">1</div>
+          <div className="diagram-container">
+            <Chart bars={bars} />;
+          </div>
           <div className="diagram-container">2</div>
         </div>
       </div>
@@ -239,6 +268,7 @@ const Spot: React.FC = () => {
       <div className="spot-history">
         <div className="history-text">View History</div>
         <div className="history-btn-connect" onClick={() => setIsAsideOpen(true)}>Connect</div>
+        <Flow />
       </div>
 
       <div className="talk-to-us">
