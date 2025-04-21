@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { Connection, PublicKey } from '@solana/web3.js'
 import './style.scss'
 import { CustomModal } from '../../../components/CustomModal'
 import axios from 'axios'
@@ -7,61 +6,18 @@ import { CoinsItem } from '../../../components/CoinItem'
 import CoinSearchItem from '../../../components/CoinSearchItem'
 import { Token, useTokenStore } from '../../../store/useTokenStore'
 
-async function getSolToUsdPrice(): Promise<number | null> {
-  try {
-    const response = await fetch(
-      'https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd'
-    )
-    if (!response.ok) {
-      throw new Error(`HTTP Error: ${response.status}`)
-    }
-    const data = await response.json()
-    return data?.solana?.usd ?? null
-  } catch (error) {
-    console.error('Помилка отримання курсу SOL:', error)
-    return null
-  }
-}
-
-interface SolanaWindow extends Window {
-  solana?: {
-    connect: () => Promise<{ publicKey: { toString: () => string } }>
-  }
-}
-
-declare const window: SolanaWindow
-
-const connectToWallet = async (setWalletAddress: (address: string) => void) => {
-  try {
-    if (!window.solana) throw new Error('Solana wallet not found')
-    const response = await window.solana.connect()
-    setWalletAddress(response.publicKey.toString())
-  } catch (error) {
-    console.error('Помилка підключення гаманця:', error)
-  }
-}
-
-async function getSolanaTokens() {
-  const response = await fetch(
-    'https://api.coingecko.com/api/v3/coins/solana/contract/'
-  )
-  const data = await response.json()
-  console.log(data)
-}
-
 type InstantProps = {
   isAsideOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const Instant: React.FC<InstantProps> = ({ isAsideOpen }) => {
-  const [value, setValue] = useState<string>('')
-  const [usdPrice, setUsdPrice] = useState<number | null>(null)
-  const [convertedValue, setConvertedValue] = useState<string | null>(null)
+  const [sellingValue, setSellingValue] = useState<string>('')
+  const [buyingValue, setBuyingValue] = useState<string>('')
+  const [sellingPrice, setSellingPrice] = useState<number | null>(null)
+  const [buyingPrice, setBuyingPrice] = useState<string | null>(null)
   const [isSellingFucused, setIsSellingFucused] = useState<boolean>(false)
-  const [walletAddress, setWalletAddress] = useState<string | null>(null)
   const [isOn, setIsOn] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [data, setData] = useState([])
   const [flag, setFlag] = useState<'selling' | 'buying' | null>(null)
 
   const {
@@ -83,28 +39,31 @@ const Instant: React.FC<InstantProps> = ({ isAsideOpen }) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let newValue = e.target.value.replace(/[^0-9.]/g, '') // Видаляємо все, крім цифр і точки
     if (newValue.startsWith('.')) newValue = '0' + newValue // Додаємо 0 перед точкою
-    setValue(newValue)
+    setSellingValue(newValue)
   }
 
   useEffect(() => {
-    axios
-      .get('https://datapi.jup.ag/v1/pools/toptrending/24h')
-      .then((response) => {
-        setData(response.data.pools)
-        console.log(response.data.pools)
-      })
-      .catch((err) => console.log(err))
-  }, [])
-
-  useEffect(() => {
-    if (usdPrice !== null) {
-      setConvertedValue((+value * usdPrice).toFixed(2))
+    if (sellingPrice && buyingPrice) {
+      setBuyingValue((+sellingValue * sellingPrice / (+buyingPrice)).toFixed(2));
     }
-  }, [value, usdPrice])
+  }, [sellingPrice, buyingPrice, sellingValue])
 
   useEffect(() => {
-    getSolToUsdPrice().then(setUsdPrice)
-  }, [])
+    axios.get(`https://api.jup.ag/price/v2?ids=${selectedSellingToken.address},${selectedBuyingToken.address}&showExtraInfo=true`)
+      .then(response => {
+        const currentPrices = [
+          response.data.data[selectedSellingToken.address]?.price,
+          response.data.data[selectedBuyingToken.address]?.price
+        ];
+        setSellingPrice(currentPrices[0]);
+        setBuyingPrice(currentPrices[1]);
+        console.log("Price");
+        console.log(response.data.data);
+        console.log(currentPrices);
+      })
+      .catch(err => console.log(err));
+
+  }, [selectedBuyingToken.address, selectedSellingToken.address]);
 
   return (
     <>
@@ -265,14 +224,19 @@ const Instant: React.FC<InstantProps> = ({ isAsideOpen }) => {
             <div className="info-money-container">
               <input
                 type="text"
-                value={value}
+                value={sellingValue}
                 onChange={handleChange}
-                className={`money-input-main ${value ? 'active' : ''}`}
+                className={`money-input-main ${sellingValue ? 'active' : ''}`}
                 placeholder={'0.00'}
                 onFocus={() => setIsSellingFucused(true)}
                 onBlur={() => setIsSellingFucused(false)}
               />
-              <div className="secondary-money">$0</div>
+              <div className="secondary-money">${sellingPrice ? (
+                  `${(+sellingValue) * (+sellingPrice)}`
+                ) : (
+                  '0.00'
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -312,11 +276,15 @@ const Instant: React.FC<InstantProps> = ({ isAsideOpen }) => {
             <div className="info-money">
               <input
                 type="text"
-                value={convertedValue?.toString()}
+                value={buyingValue?.toString()}
                 onChange={handleChange}
-                className={`money-main ${!value ? 'disabled' : ''}`}
+                className={`money-main ${!buyingValue ? 'disabled' : ''}`}
               />
-              <div className="secondary-money">$0</div>
+              <div className="secondary-money">${buyingPrice ? (
+                `${(+buyingValue) * (+buyingPrice)}`
+              ) : (
+                '0.00'
+              )}</div>
             </div>
           </div>
 

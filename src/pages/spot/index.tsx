@@ -12,6 +12,7 @@ import axios from 'axios';
 import Aside from '../../components/Aside'
 import Chart from './chart'
 import Flow from './flow'
+import {useTokenStore} from "../../store/useTokenStore";
 
 type Bar = {
   o: number;
@@ -27,7 +28,8 @@ type Props = {
 };
 
 const Spot: React.FC = () => {
-  const [bars, setBars] = useState<Bar[]>([]);
+  const [sellingBars, setSellingBars] = useState<Bar[]>([]);
+  const [buyingBars, setBuyingBars] = useState<Bar[]>([]);
   const location = useLocation()
   const navigate = useNavigate()
 
@@ -37,6 +39,15 @@ const Spot: React.FC = () => {
 
   const isRunningRef = useRef(false); // Слідкуємо, чи анімація активна
   const pauseTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const {
+    tokens,
+    fetchTokens,
+    selectedBuyingToken,
+    selectedSellingToken,
+    setSelectedBuyingToken,
+    setSelectedSellingToken,
+  } = useTokenStore()
 
   const startAnimation = async () => {
     if (isRunningRef.current) return; // Якщо вже працює, не запускаємо ще раз
@@ -105,16 +116,28 @@ const Spot: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    axios.get('https://fe-api.jup.ag/api/v1/charts/9BB6NFEcjBCtnNLFko2FqVQBq8HHM13kCyYcdQbgpump?type=15m&time_from=1744727504&time_to=1744813904')
+    const now = Math.floor(Date.now() / 1000); // поточний час у секундах
+    const fifteenMinutesAgo = now - 86400;
+    
+    axios.get(`https://fe-api.jup.ag/api/v1/charts/${selectedSellingToken.address}?type=15m&time_from=${fifteenMinutesAgo}&time_to=${now}`)
       .then(response => {
         const currentBars: Bar[] = response.data.bars;
         console.log("chart");
         console.log(response.data.bars);
-        setBars(currentBars);
+        setSellingBars(currentBars);
       })
       .catch(err => console.log(err));
 
-  }, []);
+    axios.get(`https://fe-api.jup.ag/api/v1/charts/${selectedBuyingToken.address}?type=15m&time_from=${fifteenMinutesAgo}&time_to=${now}`)
+      .then(response => {
+        const currentBars: Bar[] = response.data.bars;
+        console.log("chart");
+        console.log(response.data.bars);
+        setBuyingBars(currentBars);
+      })
+      .catch(err => console.log(err));
+
+  }, [selectedBuyingToken.address, selectedSellingToken.address]);
 
   const stopAnimation = () => {
     isRunningRef.current = false; // Виключаємо анімацію
@@ -251,17 +274,72 @@ const Spot: React.FC = () => {
         {(location.pathname === routes.spot_instant ||
           location.pathname === '/newTestSite/' ||
           location.pathname === routes.spot) && <Instant isAsideOpen={setIsAsideOpen}/>}
-        {location.pathname === routes.spot_recurring && <Reccuring />}
-        {location.pathname === routes.spot_trigger && <Trigger />}
+        {location.pathname === routes.spot_recurring && <Instant isAsideOpen={setIsAsideOpen}/>} {/*<Reccuring />*/}
+        {location.pathname === routes.spot_trigger && <Instant isAsideOpen={setIsAsideOpen}/>} {/*<Trigger />*/}
       </div>
 
       <div className="spot-chart">
         <div className="chart-btn-expand">Expand Chart</div>
         <div className="chart-diagrams">
           <div className="diagram-container">
-            <Chart bars={bars} />;
+            <div className="diagram-info">
+              <div className="diagram-main-info">
+                <img
+                  src={selectedSellingToken.icon}
+                  alt="icon"
+                  className="diagram-icon"
+                />
+                <div className="diagram-currency-info">
+                  <div className="currency-name">
+                    {selectedSellingToken.symbol}
+                  </div>
+                  <div className="currency-address">
+                    {`${selectedSellingToken.address.slice(0, 4)}...${selectedSellingToken.address.slice(-4)}`}
+                  </div>
+                </div>
+              </div>
+
+              <div className="additional-info">
+                <div className="additional-info-price">
+                  {sellingBars[sellingBars.length - 1]?.c}
+                </div>
+                <div className="additional-info-percent">
+                  ? %
+                </div>
+              </div>
+            </div>
+            <Chart bars={sellingBars} />
           </div>
-          <div className="diagram-container">2</div>
+
+          <div className="diagram-container">
+            <div className="diagram-info">
+              <div className="diagram-main-info">
+                <img
+                  src={selectedBuyingToken.icon}
+                  alt="icon"
+                  className="diagram-icon"
+                />
+                <div className="diagram-currency-info">
+                  <div className="currency-name">
+                    {selectedBuyingToken.symbol}
+                  </div>
+                  <div className="currency-address">
+                    {`${selectedBuyingToken.address.slice(0, 4)}...${selectedBuyingToken.address.slice(-4)}`}
+                  </div>
+                </div>
+              </div>
+
+              <div className="additional-info">
+                <div className="additional-info-price">
+                  {buyingBars[buyingBars.length - 1]?.c}
+                </div>
+                <div className="additional-info-percent">
+                  ? %
+                </div>
+              </div>
+            </div>
+            <Chart bars={buyingBars} />
+          </div>
         </div>
       </div>
 

