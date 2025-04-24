@@ -153,7 +153,7 @@ const Spot: React.FC = () => {
 
   return (
     <>
-      <Background />
+      <Background/>
       <Header isAsideOpen={setIsAsideOpen}/>
       {isAsideOpen && (
         <Aside isAsideOpen={setIsAsideOpen}/>
@@ -188,7 +188,7 @@ const Spot: React.FC = () => {
         >
           <motion.div
             className="carousel-track" animate={controls}
-            initial={{ x: '0%' }}
+            initial={{x: '0%'}}
             onUpdate={(latest) => {
               setCurrentX(parseFloat(latest.x.toString()));
             }}
@@ -275,7 +275,7 @@ const Spot: React.FC = () => {
           location.pathname === '/newTestSite/' ||
           location.pathname === routes.spot) && <Instant isAsideOpen={setIsAsideOpen}/>}
         {location.pathname === routes.spot_recurring && <Instant isAsideOpen={setIsAsideOpen}/>} {/*<Reccuring />*/}
-        {location.pathname === routes.spot_trigger && <Instant isAsideOpen={setIsAsideOpen}/>} {/*<Trigger />*/}
+        {location.pathname === routes.spot_trigger && <Trigger isAsideOpen={setIsAsideOpen}/>}
       </div>
 
       <div className="spot-chart">
@@ -308,7 +308,7 @@ const Spot: React.FC = () => {
                 </div>
               </div>
             </div>
-            <Chart bars={sellingBars} />
+            <Chart bars={sellingBars}/>
           </div>
 
           <div className="diagram-container">
@@ -338,7 +338,7 @@ const Spot: React.FC = () => {
                 </div>
               </div>
             </div>
-            <Chart bars={buyingBars} />
+            <Chart bars={buyingBars}/>
           </div>
         </div>
       </div>
@@ -346,7 +346,7 @@ const Spot: React.FC = () => {
       <div className="spot-history">
         <div className="history-text">View History</div>
         <div className="history-btn-connect" onClick={() => setIsAsideOpen(true)}>Connect</div>
-        <Flow />
+        <Flow/>
       </div>
 
       <div className="talk-to-us">
@@ -364,6 +364,58 @@ const Spot: React.FC = () => {
         </svg>
         <div className="talk-to-us-text">Talk to us</div>
       </div>
+
+      <footer className="footer">
+        <div className="footer-btn active">
+          <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" height="16"
+               width="16">
+            <path fill-rule="evenodd" clip-rule="evenodd"
+                  d="M5.17246 11.0054L7.49986 13.3336H1.66626V7.50005L3.99446 9.82744L11.6663 2.15485L12.8452 3.33375L5.17246 11.0054ZM18.3335 6.66645V12.5L16.0053 10.1726L8.33346 17.8452L7.15456 16.6663L14.8272 8.99455L12.4998 6.66635L18.3335 6.66645Z"
+                  fill="currentColor"></path>
+          </svg>
+          <div className="footer-btn-text">
+            Spot
+          </div>
+        </div>
+
+        <div className="footer-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+               className="h-[18px] w-[18px]">
+            <path fill="currentColor"
+                  d="M7 19v-1H6q-.425 0-.712-.288T5 17V7q0-.425.288-.712T6 6h1V5q0-.425.288-.712T8 4t.713.288T9 5v1h1q.425 0 .713.288T11 7v10q0 .425-.288.713T10 18H9v1q0 .425-.288.713T8 20t-.712-.288T7 19m0-3h2V8H7zm8 3v-4h-1q-.425 0-.712-.288T13 14V9q0-.425.288-.712T14 8h1V5q0-.425.288-.712T16 4t.713.288T17 5v3h1q.425 0 .713.288T19 9v5q0 .425-.288.713T18 15h-1v4q0 .425-.288.713T16 20t-.712-.288T15 19m0-6h2v-3h-2zm1-1.5"></path>
+          </svg>
+          <div className="footer-btn-text">
+            Pro
+          </div>
+        </div>
+
+        <div className="footer-btn">
+          <svg width="16" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg"
+               className="h-4 w-4">
+            <path
+              d="M3.44806 4.86956C3.44806 5.35387 3.64045 5.81834 3.98291 6.1608C4.32536 6.50325 4.78984 6.69565 5.27414 6.69565C5.75845 6.69565 6.22292 6.50325 6.56538 6.1608C6.90784 5.81834 7.10023 5.35387 7.10023 4.86956C7.10023 4.38525 6.90784 3.92078 6.56538 3.57832C6.22292 3.23587 5.75845 3.04348 5.27414 3.04348C4.78984 3.04348 4.32536 3.23587 3.98291 3.57832C3.64045 3.92078 3.44806 4.38525 3.44806 4.86956Z"
+              fill="currentColor"></path>
+            <path
+              d="M10.7524 12.1739C10.7524 12.6582 10.9448 13.1227 11.2873 13.4651C11.6297 13.8076 12.0942 14 12.5785 14C13.0628 14 13.5273 13.8076 13.8697 13.4651C14.2122 13.1227 14.4046 12.6582 14.4046 12.1739C14.4046 11.6896 14.2122 11.2251 13.8697 10.8827C13.5273 10.5402 13.0628 10.3478 12.5785 10.3478C12.0942 10.3478 11.6297 10.5402 11.2873 10.8827C10.9448 11.2251 10.7524 11.6896 10.7524 12.1739Z"
+              fill="currentColor"></path>
+            <path
+              d="M15.0567 2.00001H10.8828C10.8057 1.99949 10.7302 2.02207 10.6661 2.06484C10.6019 2.10762 10.552 2.16863 10.5228 2.24001C10.492 2.31143 10.4835 2.39049 10.4984 2.46683C10.5133 2.54317 10.5509 2.61323 10.6063 2.66783L12.0568 4.10783C12.0694 4.12 12.0794 4.13459 12.0863 4.15072C12.0931 4.16686 12.0967 4.18421 12.0967 4.20175C12.0967 4.21928 12.0931 4.23663 12.0863 4.25277C12.0794 4.2689 12.0694 4.28349 12.0568 4.29566L4.16285 12.1739C4.01756 12.3213 3.93611 12.52 3.93611 12.727C3.93611 12.9339 4.01756 13.1326 4.16285 13.28C4.31043 13.4254 4.50874 13.5077 4.71589 13.5096C4.81918 13.5111 4.92175 13.4921 5.01761 13.4536C5.11346 13.4151 5.20067 13.3578 5.27415 13.2852L13.1524 5.39131C13.1646 5.37869 13.1792 5.36864 13.1953 5.36179C13.2114 5.35493 13.2288 5.35139 13.2463 5.35139C13.2638 5.35139 13.2812 5.35493 13.2973 5.36179C13.3135 5.36864 13.3281 5.37869 13.3402 5.39131L14.7802 6.83131C14.8348 6.8867 14.9049 6.9243 14.9812 6.9392C15.0576 6.95409 15.1366 6.94558 15.2081 6.91479C15.2794 6.88561 15.3404 6.83573 15.3832 6.77156C15.426 6.7074 15.4486 6.6319 15.4481 6.55479V2.38088C15.444 2.27935 15.4012 2.18323 15.3284 2.11235C15.2556 2.04148 15.1584 2.00127 15.0567 2.00001Z"
+              fill="currentColor"></path>
+          </svg>
+          <div className="footer-btn-text">
+            Perps
+          </div>
+        </div>
+
+        <div className="footer-btn">
+          <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' width='16' height='16'>
+            <path fill="currentColor" d='M196 136a16 16 0 1 1-16-16a16 16 0 0 1 16 16m40-36v80a32 32 0 0 1-32 32H60a32 32 0 0 1-32-32V60.92A32 32 0 0 1 60 28h132a12 12 0 0 1 0 24H60a8 8 0 0 0-8 8.26v.08A8.32 8.32 0 0 0 60.48 68H204a32 32 0 0 1 32 32m-24 0a8 8 0 0 0-8-8H60.48A33.7 33.7 0 0 1 52 90.92V180a8 8 0 0 0 8 8h144a8 8 0 0 0 8-8Z'/>
+          </svg>
+          <div className="footer-btn-text">
+            Portfolio
+          </div>
+        </div>
+      </footer>
     </>
   )
 }

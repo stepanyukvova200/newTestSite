@@ -1,7 +1,6 @@
 import React from 'react'
+import "@reown/appkit-wallet-button/react";
 import { CloseIcon, QuickAccountIcon, QuickIcon } from '../icons'
-import { useAppKitWallet } from "@reown/appkit-wallet-button/react";
-import { SolanaAdapter } from "@reown/appkit-adapter-solana/react";
 import './style.scss'
 
 
@@ -70,6 +69,9 @@ const Aside: React.FC<AsideProps> = ({isAsideOpen}) => {
       <div className="aside__background"></div>
       <div className="aside__content">
         <appkit-button />
+        {/* <W3mAllWalletsListItem /> */}
+        {/*<appkit-wallet-button wallet="metamask" qrcode="qrcode" />
+        <appkit-wallet-button wallet="trust" />*/}
         <button className='aside__close-btn' onClick={() => isAsideOpen(false)}>
           <CloseIcon />
         </button>
