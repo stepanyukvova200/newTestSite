@@ -5,6 +5,7 @@ import axios from 'axios'
 import { CoinsItem } from '../../../components/CoinItem'
 import CoinSearchItem from '../../../components/CoinSearchItem'
 import { Token, useTokenStore } from '../../../store/useTokenStore'
+import { debounce } from '@mui/material'
 
 type InstantProps = {
   isAsideOpen: React.Dispatch<React.SetStateAction<boolean>>
@@ -23,6 +24,7 @@ const Instant: React.FC<InstantProps> = ({ isAsideOpen }) => {
   const {
     tokens,
     fetchTokens,
+    searchTokens,
     selectedBuyingToken,
     selectedSellingToken,
     setSelectedBuyingToken,
@@ -33,8 +35,24 @@ const Instant: React.FC<InstantProps> = ({ isAsideOpen }) => {
     fetchTokens()
   }, [])
 
+  const [search, setSearch] = useState('')
+
+  const debouncedSearch = debounce((value: string) => {
+    searchTokens(value)
+  }, 300)
+
+  useEffect(() => {
+    if (search.length > 1) {
+      debouncedSearch(search)
+    }
+  }, [search])
+
   const handleOpen = () => setIsModalOpen(true)
-  const handleClose = () => setIsModalOpen(false)
+  const handleClose = () => {
+    setSearch('')
+    fetchTokens()
+    setIsModalOpen(false)
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let newValue = e.target.value.replace(/[^0-9.]/g, '') // Видаляємо все, крім цифр і точки
@@ -44,26 +62,28 @@ const Instant: React.FC<InstantProps> = ({ isAsideOpen }) => {
 
   useEffect(() => {
     if (sellingPrice && buyingPrice) {
-      setBuyingValue((+sellingValue * sellingPrice / (+buyingPrice)).toFixed(2));
+      setBuyingValue(((+sellingValue * sellingPrice) / +buyingPrice).toFixed(2))
     }
   }, [sellingPrice, buyingPrice, sellingValue])
 
   useEffect(() => {
-    axios.get(`https://api.jup.ag/price/v2?ids=${selectedSellingToken.address},${selectedBuyingToken.address}&showExtraInfo=true`)
-      .then(response => {
+    axios
+      .get(
+        `https://api.jup.ag/price/v2?ids=${selectedSellingToken.address},${selectedBuyingToken.address}&showExtraInfo=true`
+      )
+      .then((response) => {
         const currentPrices = [
           response.data.data[selectedSellingToken.address]?.price,
-          response.data.data[selectedBuyingToken.address]?.price
-        ];
-        setSellingPrice(currentPrices[0]);
-        setBuyingPrice(currentPrices[1]);
-        console.log("Price");
-        console.log(response.data.data);
-        console.log(currentPrices);
+          response.data.data[selectedBuyingToken.address]?.price,
+        ]
+        setSellingPrice(currentPrices[0])
+        setBuyingPrice(currentPrices[1])
+        console.log('Price')
+        console.log(response.data.data)
+        console.log(currentPrices)
       })
-      .catch(err => console.log(err));
-
-  }, [selectedBuyingToken.address, selectedSellingToken.address]);
+      .catch((err) => console.log(err))
+  }, [selectedBuyingToken.address, selectedSellingToken.address])
 
   return (
     <>
@@ -231,11 +251,8 @@ const Instant: React.FC<InstantProps> = ({ isAsideOpen }) => {
                 onFocus={() => setIsSellingFucused(true)}
                 onBlur={() => setIsSellingFucused(false)}
               />
-              <div className="secondary-money">${sellingPrice ? (
-                  `${(+sellingValue) * (+sellingPrice)}`
-                ) : (
-                  '0.00'
-                )}
+              <div className="secondary-money">
+                ${sellingPrice ? `${+sellingValue * +sellingPrice}` : '0.00'}
               </div>
             </div>
           </div>
@@ -280,11 +297,9 @@ const Instant: React.FC<InstantProps> = ({ isAsideOpen }) => {
                 onChange={handleChange}
                 className={`money-main ${!buyingValue ? 'disabled' : ''}`}
               />
-              <div className="secondary-money">${buyingPrice ? (
-                `${(+buyingValue) * (+buyingPrice)}`
-              ) : (
-                '0.00'
-              )}</div>
+              <div className="secondary-money">
+                ${buyingPrice ? `${+buyingValue * +buyingPrice}` : '0.00'}
+              </div>
             </div>
           </div>
 
@@ -332,6 +347,22 @@ const Instant: React.FC<InstantProps> = ({ isAsideOpen }) => {
       </div>
 
       <CustomModal open={isModalOpen} onClose={handleClose} flag={flag}>
+        <div className="search">
+          <div>
+            <span className="search__icon">i</span>
+            <input
+              className="search__input"
+              type="text"
+              placeholder='Search any token. Include " " for exact match.'
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
+
+          <button className="seacrh__esc" onClick={() => handleClose()}>
+            Esc
+          </button>
+        </div>
         <div className="coins">
           {tokens.map((token: Token) => {
             return (
@@ -340,16 +371,15 @@ const Instant: React.FC<InstantProps> = ({ isAsideOpen }) => {
                 onClick={() => {
                   if (flag === 'selling') {
                     setSelectedSellingToken(token)
-                    handleClose()
                   } else if (flag === 'buying') {
                     setSelectedBuyingToken(token)
-                    handleClose()
                   }
+                  handleClose()
                 }}
                 img={token.icon}
                 name={token.symbol}
                 approved={token.tags.includes('verified')}
-                active={true}
+                active={+token.organicScore.toFixed(0) < 80}
                 count={+token.organicScore.toFixed(0)}
                 fullName={token.name}
                 nameID={token.address}

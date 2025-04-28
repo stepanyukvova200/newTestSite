@@ -22,6 +22,7 @@ interface TokenStore {
   selectedSellingToken: Token
   selectedBuyingToken: Token
   fetchTokens: () => Promise<void>
+  searchTokens: (guery: string) => Promise<void>
   setSelectedSellingToken: (token: Token) => void
   setSelectedBuyingToken: (token: Token) => void
 }
@@ -61,6 +62,17 @@ export const useTokenStore = create<TokenStore>((set) => ({
       const { data } = await tokenService.getAllTokens()
       set({ tokens: data.tokens, loading: false })
     } catch (error) {
+      set({ loading: false })
+    }
+  },
+
+  searchTokens: async (query: string) => {
+    set({ loading: true })
+
+    try {
+      const { data } = await tokenService.searchTokens(query)
+      set({ tokens: data.tokens, loading: false })
+    } catch {
       set({ loading: false })
     }
   },
