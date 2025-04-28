@@ -274,7 +274,7 @@ const Spot: React.FC = () => {
         {(location.pathname === routes.spot_instant ||
           location.pathname === '/newTestSite/' ||
           location.pathname === routes.spot) && <Instant isAsideOpen={setIsAsideOpen}/>}
-        {location.pathname === routes.spot_recurring && <Instant isAsideOpen={setIsAsideOpen}/>} {/*<Reccuring />*/}
+        {location.pathname === routes.spot_recurring && <Reccuring isAsideOpen={setIsAsideOpen}/>}
         {location.pathname === routes.spot_trigger && <Trigger isAsideOpen={setIsAsideOpen}/>}
       </div>
 

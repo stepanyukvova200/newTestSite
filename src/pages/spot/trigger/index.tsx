@@ -3,9 +3,7 @@ import './style.scss'
 import { CustomModal } from '../../../components/CustomModal'
 import axios from 'axios'
 import { CoinsItem } from '../../../components/CoinItem'
-import CoinSearchItem from '../../../components/CoinSearchItem'
 import { Token, useTokenStore } from '../../../store/useTokenStore'
-import {info} from "sass";
 
 type InstantProps = {
   isAsideOpen: React.Dispatch<React.SetStateAction<boolean>>
