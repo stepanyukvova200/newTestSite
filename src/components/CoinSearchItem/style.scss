@@ -1,4 +1,4 @@
-.coin {
+.coin-search {
   display: flex;
   color: white;
   padding: 4px 16px;
@@ -53,5 +53,11 @@
     gap: 4px;
     align-items: center;
     color: rgba(232, 249, 255, 0.5);
+  }
+
+  &__statics {
+    display: flex;
+    font-size: 12px;
+    color: #fff;
   }
 }

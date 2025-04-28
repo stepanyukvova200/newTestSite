@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './style.scss'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { routes } from '../../constants/routes'
@@ -7,6 +7,9 @@ import { data } from '../MoreItem/data'
 import { MoreItem } from '../MoreItem'
 import { iconsData } from '../SocialItem/data'
 import { SocialIcon } from '../SocialItem'
+import { debounce } from '@mui/material'
+import axios from 'axios'
+import CoinSearchItem from '../CoinSearchItem'
 
 type HeaderProps = {
   isAsideOpen: React.Dispatch<React.SetStateAction<boolean>>
@@ -20,6 +23,34 @@ const Header: React.FC<HeaderProps> = ({ isAsideOpen }) => {
 
   const handleOpen = () => setIsModalOpen(true)
   const handleClose = () => setIsModalOpen(false)
+
+  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false)
+  const [search, setSearch] = useState('')
+  const debouncedSearch = debounce((value: string) => {}, 300)
+
+  const [searchData, setSearchData] = useState([])
+
+  useEffect(() => {
+    axios
+      .get('https://datapi.jup.ag/v1/pools/toptrending/24h')
+      .then((response) => {
+        const data = response.data.pools
+        setSearchData(data)
+      })
+      .catch((err) => console.log(err))
+  }, [])
+
+  useEffect(() => {
+    if (search.length > 1) {
+      debouncedSearch(search)
+    }
+  }, [search])
+
+  const handleOpenSearchModal = () => setIsSearchModalOpen(true)
+  const handleCloseSearchModal = () => {
+    setSearch('')
+    setIsSearchModalOpen(false)
+  }
 
   return (
     <>
@@ -85,7 +116,7 @@ const Header: React.FC<HeaderProps> = ({ isAsideOpen }) => {
           </div>
         </div>
 
-        <div className="header-search">
+        <div className="header-search" onClick={handleOpenSearchModal}>
           <svg
             className="icon-search"
             width="20"
@@ -148,6 +179,45 @@ const Header: React.FC<HeaderProps> = ({ isAsideOpen }) => {
           </button>
         </div>
       </div>
+      <CustomModal
+        open={isSearchModalOpen}
+        onClose={handleCloseSearchModal}
+        flag={null}
+      >
+        <div className="search">
+          <div>
+            <span className="search__icon">i</span>
+            <input
+              className="search__input"
+              type="text"
+              placeholder='Search any token. Include " " for exact match.'
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
+
+          <button className="seacrh__esc" onClick={handleCloseSearchModal}>
+            Esc
+          </button>
+        </div>
+        <div className="search-coins">
+          {searchData.map((item: any) => {
+            return (
+              <CoinSearchItem
+                img={item.baseAsset.icon}
+                name={item.baseAsset.symbol}
+                approved={true}
+                fullName={item.baseAsset.name}
+                nameID={item.baseAsset.id}
+                mc={'1,15 млрд'}
+                vol={'191 млн'}
+                liq={'21,4 млн'}
+                org={item.baseAsset.organicScore.toFixed(0)}
+              />
+            )
+          })}
+        </div>
+      </CustomModal>
       <CustomModal open={isModalOpen} onClose={handleClose} flag={null}>
         <div className="items">
           {data.map((item) => (

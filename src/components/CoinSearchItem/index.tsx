@@ -6,11 +6,12 @@ type CoinSearchItemProps = {
   img: string
   name: string
   approved: boolean
-  active: boolean
-  count: number
   fullName: string
   nameID: string
-  capital: number
+  mc: string
+  vol: string
+  liq: string
+  org: string
 }
 
 const shorter = (str: string) => {
@@ -22,36 +23,43 @@ const CoinSearchItem: FC<CoinSearchItemProps> = ({
   img,
   name,
   approved,
-  active,
-  count,
   fullName,
   nameID,
-  capital,
+  mc,
+  vol,
+  liq,
+  org,
 }) => {
   return (
-    <div className="coin">
+    <div className="coin-search">
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        <img className="coin__img" src={img} alt="token" />
-        <div className="coin__data">
-          <div className="coin__header">
-            <div className="coin__name">{name}</div>
-            <div className="coin__approved">
+        <img className="coin-search__img" src={img} alt="token" />
+        <div className="coin-search__data">
+          <div className="coin-search__header">
+            <div className="coin-search__name">{name}</div>
+            <div className="coin-search__approved">
               <Approved color={'white'} />
             </div>
-            <div className="coin__list">
-              <List color={'white'} />
-              {count}
-            </div>
           </div>
-          <div className="coin__about">
-            <div className="coin__full-name">{fullName}</div>
+          <div className="coin-search__about">
+            <div className="coin-search__full-name">{fullName}</div>
             <div>·</div>
-            <div className="coin__name-id">{shorter(nameID)}</div>
+            <div className="coin-search__name-id">{shorter(nameID)}</div>
           </div>
         </div>
       </div>
 
-      <div className="coin__capital">{capital}</div>
+      <div className="coin-search__statics">
+        <div>
+          <div className="coin-search__mc">MC: {mc}</div>
+          <div className="coin-search__vol">VOL: {vol}</div>
+        </div>
+
+        <div>
+          <div className="coin-search__liq">LIQ: {liq}</div>
+          <div className="coin-search__org">ORG: {org}</div>
+        </div>
+      </div>
     </div>
   )
 }
