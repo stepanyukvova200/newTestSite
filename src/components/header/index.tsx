@@ -99,7 +99,7 @@ const Header: React.FC<HeaderProps> = ({ isAsideOpen }) => {
             More
           </div>
 
-          <div className="navigation-burger">
+          <div className="navigation-burger" onClick={handleOpen}>
             <svg
               width="1em"
               height="1em"
