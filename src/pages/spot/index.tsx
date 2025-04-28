@@ -346,7 +346,6 @@ const Spot: React.FC = () => {
       <div className="spot-history">
         <div className="history-text">View History</div>
         <div className="history-btn-connect" onClick={() => setIsAsideOpen(true)}>Connect</div>
-        <Flow/>
       </div>
 
       <div className="talk-to-us">
@@ -378,7 +377,7 @@ const Spot: React.FC = () => {
           </div>
         </div>
 
-        <div className="footer-btn">
+        <div className="footer-btn" onClick={() => {window.location.href = 'https://jup.ag/pro?tab=cooking';}}>
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
                className="h-[18px] w-[18px]">
             <path fill="currentColor"
@@ -389,7 +388,7 @@ const Spot: React.FC = () => {
           </div>
         </div>
 
-        <div className="footer-btn">
+        <div className="footer-btn" onClick={() => {window.location.href = 'https://jup.ag/perps';}}>
           <svg width="16" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg"
                className="h-4 w-4">
             <path
@@ -407,7 +406,7 @@ const Spot: React.FC = () => {
           </div>
         </div>
 
-        <div className="footer-btn">
+        <div className="footer-btn" onClick={() => setIsAsideOpen(true)}>
           <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' width='16' height='16'>
             <path fill="currentColor" d='M196 136a16 16 0 1 1-16-16a16 16 0 0 1 16 16m40-36v80a32 32 0 0 1-32 32H60a32 32 0 0 1-32-32V60.92A32 32 0 0 1 60 28h132a12 12 0 0 1 0 24H60a8 8 0 0 0-8 8.26v.08A8.32 8.32 0 0 0 60.48 68H204a32 32 0 0 1 32 32m-24 0a8 8 0 0 0-8-8H60.48A33.7 33.7 0 0 1 52 90.92V180a8 8 0 0 0 8 8h144a8 8 0 0 0 8-8Z'/>
           </svg>

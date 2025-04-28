@@ -3,8 +3,12 @@
   inset: 0;
   bottom: 0;
   z-index: -10;
-  height: calc(100vh - 56px);
+  height: 100vh;
   background: rgb(14 19 30);
+
+  @media (max-width: 639px) {
+    height: calc(100vh - 56px);
+  }
 }
 
 .fixed-background img {

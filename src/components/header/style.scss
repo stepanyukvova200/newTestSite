@@ -26,10 +26,18 @@
       padding: 0 10px 0 0 !important;
       gap: 10px;
 
+      @media (max-width: 639px) {
+        display: flex !important;
+      }
+
       .logo-text {
         color: rgba(232, 249, 255);
         font-size: 14px;
         font-weight: 600;
+
+        @media (max-width: 639px) {
+          display: none;
+        }
       }
 
       .header-icon {
@@ -49,6 +57,10 @@
 
       font-size: 14px;
       font-weight: 600;
+
+      @media (max-width: 639px) {
+        display: none;
+      }
 
       &.active {
         color: var(--color-green-text);
@@ -72,8 +84,25 @@
       font-size: 14px;
       font-weight: 600;
 
+      @media (max-width: 639px) {
+        display: none;
+      }
+
       &:hover {
         color: var(--color-green-text);
+      }
+    }
+
+    .navigation-burger {
+      display: none;
+
+      @media (max-width: 639px) {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 100%;
+        margin-right: 4px;
       }
     }
   }
@@ -95,6 +124,14 @@
 
     border-radius: 9999px;
     border: 1px solid transparent;
+
+    @media (max-width: 639px) {
+      position: relative;
+      flex: 1;
+      left: 0;
+      transform: translateX(0%);
+      margin-right: 8px;
+    }
 
     &:hover {
       color: hsla(83, 81%, 73%, 0.5);
@@ -158,6 +195,10 @@
   color: rgba(232,249,255,.6);
   font-size: 12px;
   font-weight: 600;
+
+  @media (max-width: 639px) {
+    display: none;
+  }
 
   span {
     width: 16px;

@@ -68,7 +68,7 @@ const Aside: React.FC<AsideProps> = ({isAsideOpen}) => {
     <div className="aside">
       <div className="aside__background"></div>
       <div className="aside__content">
-        <appkit-button />
+        {/*<appkit-button />*/}
         {/* <W3mAllWalletsListItem /> */}
         {/*<appkit-wallet-button wallet="metamask" qrcode="qrcode" />
         <appkit-wallet-button wallet="trust" />*/}

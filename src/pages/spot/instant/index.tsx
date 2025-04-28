@@ -5,6 +5,9 @@ import axios from 'axios'
 import { CoinsItem } from '../../../components/CoinItem'
 import CoinSearchItem from '../../../components/CoinSearchItem'
 import { Token, useTokenStore } from '../../../store/useTokenStore'
+import { modal } from '@reown/appkit/react';
+import Flow from "../flow";
+import { useAppKitAccount } from "@reown/appkit/react";
 
 type InstantProps = {
   isAsideOpen: React.Dispatch<React.SetStateAction<boolean>>
@@ -19,6 +22,7 @@ const Instant: React.FC<InstantProps> = ({ isAsideOpen }) => {
   const [isOn, setIsOn] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [flag, setFlag] = useState<'selling' | 'buying' | null>(null)
+  const { isConnected } = useAppKitAccount();
 
   const {
     tokens,
@@ -41,6 +45,10 @@ const Instant: React.FC<InstantProps> = ({ isAsideOpen }) => {
     if (newValue.startsWith('.')) newValue = '0' + newValue // Додаємо 0 перед точкою
     setSellingValue(newValue)
   }
+
+  const handleConnectClick = () => {
+    modal?.open({ view: "Connect" });
+  };
 
   useEffect(() => {
     if (sellingPrice && buyingPrice) {
@@ -322,13 +330,18 @@ const Instant: React.FC<InstantProps> = ({ isAsideOpen }) => {
           <div className="helper rtse">rtse</div>
         </div>
 
-        <div
-          className="instant-connect"
-          // onClick={() => connectToWallet(setWalletAddress)}
-          onClick={() => isAsideOpen(true)}
-        >
-          Connect
-        </div>
+        {!isConnected && (
+          <div
+            className="instant-connect"
+            // onClick={() => connectToWallet(setWalletAddress)}
+            onClick={() => {
+              handleConnectClick();
+            }}
+          >
+            Connect
+          </div>
+        )}
+        <Flow/>
       </div>
 
       <CustomModal open={isModalOpen} onClose={handleClose} flag={flag}>
