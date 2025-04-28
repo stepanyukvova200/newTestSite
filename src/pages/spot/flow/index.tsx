@@ -72,7 +72,7 @@ const Flow: React.FC = () => {
 
   return (
     <>
-      {isConnected && (
+      {/*{isConnected && (
         <div>
           <button onClick={handleGetBalance}>Get Balance</button>
         </div>
@@ -81,10 +81,10 @@ const Flow: React.FC = () => {
         <div>
           <button onClick={handleSignMsg}>Sign Message</button>
         </div>
-      )}
+      )}*/}
       {isConnected && (
         <div>
-          <button onClick={handleSendTx}>Send Transaction</button>
+          <div className='instant-connect' onClick={handleSendTx}>Send Transaction</div>
         </div>
       )}
     </>

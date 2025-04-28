@@ -16,6 +16,7 @@ const Trigger: React.FC<InstantProps> = ({ isAsideOpen }) => {
   const [buyingValue, setBuyingValue] = useState<string>('')
   const [sellingPrice, setSellingPrice] = useState<number | null>(null)
   const [buyingPrice, setBuyingPrice] = useState<string | null>(null)
+  const [sellingRate, setSellingRate] = useState<string>('0')
   const [isSellingFucused, setIsSellingFucused] = useState<boolean>(false)
   const [isOn, setIsOn] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -43,6 +44,15 @@ const Trigger: React.FC<InstantProps> = ({ isAsideOpen }) => {
     if (newValue.startsWith('.')) newValue = '0' + newValue // Додаємо 0 перед точкою
     setSellingValue(newValue)
   }
+
+  useEffect(() => {
+    if (buyingPrice && sellingPrice)
+    setSellingRate(((+buyingPrice) / (+sellingPrice)).toString())
+  }, [buyingPrice, sellingPrice]);
+
+  useEffect(() => {
+    setBuyingValue(((+sellingValue) / (+sellingRate)).toString());
+  }, [sellingValue, sellingRate]);
 
   useEffect(() => {
     if (sellingPrice && buyingPrice) {
@@ -317,6 +327,57 @@ const Trigger: React.FC<InstantProps> = ({ isAsideOpen }) => {
             </svg>
             <div className="additional-info">Token Permission</div>
           </div>
+
+
+        </div>
+
+        <div className="trigger-additional">
+          <div className="rate">
+            <div className="sell-rate">
+              <div className="sell-rate-text">
+                Buy {selectedBuyingToken.symbol} at rate
+              </div>
+              <input
+                type="text"
+                value={sellingRate}
+                onChange={(value) => setSellingRate(value.target.value)}
+                className={`sell-rate-input ${sellingValue ? 'active' : ''}`}
+                placeholder={'0.00'}
+                /*onFocus={() => setIsSellingFucused(true)}
+                onBlur={() => setIsSellingFucused(false)}*/
+              />
+            </div>
+
+            <div className="rate-additional">
+              {/*@ts-ignore*/}
+              <div className="rate-additional-use-market" onClick={() => setSellingRate((((+buyingPrice) / (+sellingPrice)).toString()))}>
+                Use Market
+              </div>
+              <div className="rate-additional-symbol">
+                {selectedSellingToken.symbol}
+              </div>
+              <div className="rate-additional-usd-price">
+                {/*@ts-ignore*/}
+                ≈ ${+sellingRate / ((+buyingPrice) / (+sellingPrice))}
+              </div>
+            </div>
+          </div>
+          <div className="expiry">
+            <div className="expiry-text">
+              Expiry
+            </div>
+            <div className="expiry-dropdown">
+              <div className="expiry-dropdown-text">
+                Never
+              </div>
+              <svg className="" width="10" height="6" viewBox="0 0 10 6" fill="inherit"
+                   xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                      d="M0.292893 0.292893C0.683416 -0.097631 1.31658 -0.097631 1.7071 0.292893L4.99999 3.58579L8.29288 0.292893C8.6834 -0.0976311 9.31657 -0.0976311 9.70709 0.292893C10.0976 0.683417 10.0976 1.31658 9.70709 1.70711L5.7071 5.70711C5.31657 6.09763 4.68341 6.09763 4.29289 5.70711L0.292893 1.70711C-0.0976309 1.31658 -0.0976309 0.683417 0.292893 0.292893Z"
+                      fill="currentColor"></path>
+              </svg>
+            </div>
+          </div>
         </div>
 
         <div
@@ -367,7 +428,7 @@ const Trigger: React.FC<InstantProps> = ({ isAsideOpen }) => {
                 Buy {selectedBuyingToken.symbol} at Rate
               </div>
               <div className="line-additional">
-                {buyingPrice} {selectedBuyingToken.symbol}
+                {sellingRate} {selectedSellingToken.symbol}
               </div>
             </div>
 
