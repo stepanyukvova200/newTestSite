@@ -301,7 +301,7 @@ const Spot: React.FC = () => {
 
               <div className="additional-info">
                 <div className="additional-info-price">
-                  {sellingBars[sellingBars.length - 1]?.c}
+                  {(+sellingBars[sellingBars.length - 1]?.c).toFixed(2)}
                 </div>
                 <div className="additional-info-percent">
                   ? %
@@ -331,7 +331,7 @@ const Spot: React.FC = () => {
 
               <div className="additional-info">
                 <div className="additional-info-price">
-                  {buyingBars[buyingBars.length - 1]?.c}
+                  {(+buyingBars[buyingBars.length - 1]?.c).toFixed(2)}
                 </div>
                 <div className="additional-info-percent">
                   ? %

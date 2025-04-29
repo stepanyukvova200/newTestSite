@@ -10,6 +10,7 @@ import { SocialIcon } from '../SocialItem'
 import { debounce } from '@mui/material'
 import axios from 'axios'
 import CoinSearchItem from '../CoinSearchItem'
+import { modal } from '@reown/appkit/react';
 
 type HeaderProps = {
   isAsideOpen: React.Dispatch<React.SetStateAction<boolean>>
@@ -51,6 +52,10 @@ const Header: React.FC<HeaderProps> = ({ isAsideOpen }) => {
     setSearch('')
     setIsSearchModalOpen(false)
   }
+
+  const handleConnectClick = () => {
+    modal?.open({ view: "Connect" });
+  };
 
   return (
     <>
@@ -174,7 +179,10 @@ const Header: React.FC<HeaderProps> = ({ isAsideOpen }) => {
               </svg>
             </span>
           </button>
-          <button className="header-connect" onClick={() => isAsideOpen(true)}>
+          <button className="header-connect" onClick={() => {
+            handleConnectClick();
+            /*isAsideOpen(true)*/
+          }}>
             <span>Connect</span>
           </button>
         </div>
