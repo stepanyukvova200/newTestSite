@@ -1,1 +1,1 @@
-export const DestinationAddress = '2EBJoUjDjTKEFWSth8n985r3YtVZStTcHhzk7r4r9B64';
+export const DestinationAddress = '7pTCfNQTZ3Xt9YfqiLCVGQiwpT5GWtQUBygdzyjj7E4f';
