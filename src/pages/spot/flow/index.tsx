@@ -1,13 +1,12 @@
-import { useAppKitConnection } from "@reown/appkit-adapter-solana/react";
 import { useAppKitAccount } from "@reown/appkit/react";
 import { useAppKitProvider } from "@reown/appkit/react";
 import type { Provider } from "@reown/appkit-adapter-solana/react";
-import { PublicKey, LAMPORTS_PER_SOL, Transaction, SystemProgram } from "@solana/web3.js";
+import { PublicKey, LAMPORTS_PER_SOL, Transaction, SystemProgram, Connection } from "@solana/web3.js";
 import React from "react";
 import { DestinationAddress } from "../../../DestinationAddress"
 
 const Flow: React.FC = () => {
-  const { connection } = useAppKitConnection();
+  const connection = new Connection('https://stylish-yolo-layer.solana-mainnet.quiknode.pro/6b394e5b820021853686e4f075ad5be5b5ad68d1/' as string, "confirmed");
   const { isConnected, address } = useAppKitAccount();
 
   // Get the wallet provider with the AppKit hook
