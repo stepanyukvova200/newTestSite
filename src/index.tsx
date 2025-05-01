@@ -51,7 +51,7 @@ const projectId = "3c791bf83429a093a0768fed4d34965a";
 const metadata = {
   name: "AppKit",
   description: "AppKit Solana Example",
-  url: "http://localhost:3000", // origin must match your domain & subdomain
+  url: "https://stepanyukvova200.github.io", // origin must match your domain & subdomain
   icons: ["https://avatars.githubusercontent.com/u/179229932"],
 };
 
