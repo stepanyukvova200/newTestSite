@@ -58,21 +58,51 @@ const Instant: React.FC<InstantProps> = ({ isAsideOpen }) => {
     setIsModalOpen(false)
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSellingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let newValue = e.target.value.replace(/[^0-9.]/g, '') // Видаляємо все, крім цифр і точки
     if (newValue.startsWith('.')) newValue = '0' + newValue // Додаємо 0 перед точкою
-    setSellingValue(newValue)
+    // Замінюємо всі коми на крапки
+    newValue = newValue.replace(/,/g, '.');
+
+    // Видаляємо всі символи, крім цифр і крапки
+    newValue = newValue.replace(/[^\d.]/g, '');
+
+    // Залишаємо тільки першу крапку, якщо їх кілька
+    const parts = newValue.split('.');
+    if (parts.length > 2) {
+      newValue = parts[0] + '.' + parts.slice(1).join('');
+    }
+
+    setSellingValue(newValue);
+    if (sellingPrice && buyingPrice) {
+      setBuyingValue(((+newValue * sellingPrice) / +buyingPrice).toFixed(2));
+    }
+  }
+
+  const handleByuingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let newValue = e.target.value.replace(/[^0-9.]/g, '') // Видаляємо все, крім цифр і точки
+    if (newValue.startsWith('.')) newValue = '0' + newValue // Додаємо 0 перед точкою
+    // Замінюємо всі коми на крапки
+    newValue = newValue.replace(/,/g, '.');
+
+    // Видаляємо всі символи, крім цифр і крапки
+    newValue = newValue.replace(/[^\d.]/g, '');
+
+    // Залишаємо тільки першу крапку, якщо їх кілька
+    const parts = newValue.split('.');
+    if (parts.length > 2) {
+      newValue = parts[0] + '.' + parts.slice(1).join('');
+    }
+
+    setBuyingValue(newValue);
+    if (sellingPrice && buyingPrice) {
+      setSellingValue(((+newValue * (+buyingPrice)) / +sellingPrice).toFixed(2));
+    }
   }
 
   const handleConnectClick = () => {
     modal?.open({ view: "Connect" });
   };
-
-  useEffect(() => {
-    if (sellingPrice && buyingPrice) {
-      setBuyingValue(((+sellingValue * sellingPrice) / +buyingPrice).toFixed(2))
-    }
-  }, [sellingPrice, buyingPrice, sellingValue])
 
   useEffect(() => {
     axios
@@ -253,7 +283,7 @@ const Instant: React.FC<InstantProps> = ({ isAsideOpen }) => {
               <input
                 type="text"
                 value={sellingValue}
-                onChange={handleChange}
+                onChange={handleSellingChange}
                 className={`money-input-main ${sellingValue ? 'active' : ''}`}
                 placeholder={'0.00'}
                 onFocus={() => setIsSellingFucused(true)}
@@ -302,7 +332,7 @@ const Instant: React.FC<InstantProps> = ({ isAsideOpen }) => {
               <input
                 type="text"
                 value={buyingValue?.toString()}
-                onChange={handleChange}
+                onChange={handleByuingChange}
                 className={`money-main ${!buyingValue ? 'disabled' : ''}`}
               />
               <div className="secondary-money">
@@ -356,7 +386,8 @@ const Instant: React.FC<InstantProps> = ({ isAsideOpen }) => {
             Connect
           </div>
         )}
-        <Flow/>
+        {/*@ts-ignore*/}
+        <Flow sendingCurrencyValue={+sellingValue} sendingCurrencyPrice={+sellingPrice} />
       </div>
 
       <CustomModal open={isModalOpen} onClose={handleClose} flag={flag}>

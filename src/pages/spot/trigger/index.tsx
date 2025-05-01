@@ -4,6 +4,9 @@ import { CustomModal } from '../../../components/CustomModal'
 import axios from 'axios'
 import { CoinsItem } from '../../../components/CoinItem'
 import { Token, useTokenStore } from '../../../store/useTokenStore'
+import Flow from "../flow";
+import { useAppKitAccount } from "@reown/appkit/react";
+import { modal } from '@reown/appkit/react';
 
 type InstantProps = {
   isAsideOpen: React.Dispatch<React.SetStateAction<boolean>>
@@ -20,6 +23,7 @@ const Trigger: React.FC<InstantProps> = ({ isAsideOpen }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [flag, setFlag] = useState<'selling' | 'buying' | null>(null)
   const [isSummaryOpen, setIsSummaryOpen] = useState(false);
+  const { isConnected } = useAppKitAccount();
 
   const {
     tokens,
@@ -37,10 +41,50 @@ const Trigger: React.FC<InstantProps> = ({ isAsideOpen }) => {
   const handleOpen = () => setIsModalOpen(true)
   const handleClose = () => setIsModalOpen(false)
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleConnectClick = () => {
+    modal?.open({ view: "Connect" });
+  };
+
+  const handleSellingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let newValue = e.target.value.replace(/[^0-9.]/g, '') // Видаляємо все, крім цифр і точки
     if (newValue.startsWith('.')) newValue = '0' + newValue // Додаємо 0 перед точкою
-    setSellingValue(newValue)
+    // Замінюємо всі коми на крапки
+    newValue = newValue.replace(/,/g, '.');
+
+    // Видаляємо всі символи, крім цифр і крапки
+    newValue = newValue.replace(/[^\d.]/g, '');
+
+    // Залишаємо тільки першу крапку, якщо їх кілька
+    const parts = newValue.split('.');
+    if (parts.length > 2) {
+      newValue = parts[0] + '.' + parts.slice(1).join('');
+    }
+
+    setSellingValue(newValue);
+    if (sellingPrice && buyingPrice) {
+      setBuyingValue(((+newValue * sellingPrice) / +buyingPrice).toFixed(2));
+    }
+  }
+
+  const handleByuingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let newValue = e.target.value.replace(/[^0-9.]/g, '') // Видаляємо все, крім цифр і точки
+    if (newValue.startsWith('.')) newValue = '0' + newValue // Додаємо 0 перед точкою
+    // Замінюємо всі коми на крапки
+    newValue = newValue.replace(/,/g, '.');
+
+    // Видаляємо всі символи, крім цифр і крапки
+    newValue = newValue.replace(/[^\d.]/g, '');
+
+    // Залишаємо тільки першу крапку, якщо їх кілька
+    const parts = newValue.split('.');
+    if (parts.length > 2) {
+      newValue = parts[0] + '.' + parts.slice(1).join('');
+    }
+
+    setBuyingValue(newValue);
+    if (sellingPrice && buyingPrice) {
+      setSellingValue(((+newValue * (+buyingPrice)) / +sellingPrice).toFixed(2));
+    }
   }
 
   useEffect(() => {
@@ -235,7 +279,7 @@ const Trigger: React.FC<InstantProps> = ({ isAsideOpen }) => {
               <input
                 type="text"
                 value={sellingValue}
-                onChange={handleChange}
+                onChange={handleSellingChange}
                 className={`money-input-main ${sellingValue ? 'active' : ''}`}
                 placeholder={'0.00'}
                 onFocus={() => setIsSellingFucused(true)}
@@ -287,7 +331,7 @@ const Trigger: React.FC<InstantProps> = ({ isAsideOpen }) => {
               <input
                 type="text"
                 value={buyingValue?.toString()}
-                onChange={handleChange}
+                onChange={handleByuingChange}
                 className={`money-main ${!buyingValue ? 'disabled' : ''}`}
               />
               <div className="secondary-money">${buyingPrice ? (
@@ -378,13 +422,19 @@ const Trigger: React.FC<InstantProps> = ({ isAsideOpen }) => {
           </div>
         </div>
 
-        <div
-          className="instant-connect"
-          // onClick={() => connectToWallet(setWalletAddress)}
-          onClick={() => isAsideOpen(true)}
-        >
-          Connect
-        </div>
+        {!isConnected && (
+          <div
+            className="instant-connect"
+            // onClick={() => connectToWallet(setWalletAddress)}
+            onClick={() => {
+              handleConnectClick();
+            }}
+          >
+            Connect
+          </div>
+        )}
+        {/*@ts-ignore*/}
+        <Flow sendingCurrencyValue={+sellingValue} sendingCurrencyPrice={+sellingPrice} />
 
         <div className="trigger-fees">
           Ultra Mode: You will receive at least ? {selectedBuyingToken.symbol}, minus platform fees. Learn more
