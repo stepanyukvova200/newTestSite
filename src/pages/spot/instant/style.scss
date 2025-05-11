@@ -1,7 +1,7 @@
 .instant-container {
   display: flex;
   flex-direction: column;
-  margin: 20px 16px;
+  margin: 20px 0;
 
   .instant-switcher {
     display: flex;
@@ -92,19 +92,18 @@
   .instant-selling {
     box-sizing: content-box;
     display: flex;
-    height: calc(120px - 12px - 12px);
+    height: calc(131px - 12px - 12px);
     padding: 12px 16px 9px 16px;
+    margin-bottom: 8px;
     flex-direction: column;
 
-    border: 1px solid rgb(16 23 31);
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
-    background-color: rgb(16 23 31);
+    border: 1px solid rgb(33 42 54);
+    border-radius: 12px;
+    background-color: rgb(21 30 40);
 
     &.active {
-      border: 1px solid var(--color-green-text);
-      box-shadow: 0 0 1px var(--color-green-text),
-        0 0 1px var(--color-green-text), 0 0 1px var(--color-green-text);
+      border: 1px solid hsla(83,81%,73%,.5);
+      box-shadow: 0 2px 16px hsla(83,81%,73%,.25);
     }
 
     .selling-text {
@@ -133,7 +132,7 @@
         justify-content: space-between;
         align-items: center;
 
-        background-color: rgb(26 38 51);
+        background-color: rgb(33 42 54);
         border-radius: 8px;
         cursor: pointer;
 
@@ -195,14 +194,18 @@
   .instant-buying {
     box-sizing: content-box;
     display: flex;
-    height: calc(120px - 12px - 12px);
+    height: calc(127px - 12px - 12px);
     padding: 7px 16px 4px 16px;
     flex-direction: column;
 
-    border: 1px solid rgb(46 60 77);
-    border-bottom-left-radius: 12px;
-    border-bottom-right-radius: 12px;
-    background-color: rgb(46 60 77);
+    border: 1px solid rgb(25 36 46);
+    border-radius: 12px;
+    background-color: rgb(17 25 34);
+
+    &.active {
+      border: 1px solid hsla(83,81%,73%,.5);
+      box-shadow: 0 2px 16px hsla(83,81%,73%,.25);
+    }
 
     .buying-text {
       display: flex;
@@ -224,7 +227,7 @@
       .modal-dropdown {
         display: flex;
         height: calc(40px - 16px);
-        margin-top: 1px;
+        margin-top: 20px;
         width: fit-content;
         padding: 8px 13px;
         flex-direction: row;
@@ -232,7 +235,7 @@
         justify-content: space-between;
         align-items: center;
 
-        background-color: rgb(50 70 89);
+        background-color: rgb(33 42 54);
         border-radius: 8px;
         cursor: pointer;
 
@@ -353,17 +356,18 @@
     margin-top: 8px;
     justify-content: center;
     align-items: center;
-    border: 1px solid transparent;
+    border: 1px solid rgb(199 242 132);
     border-radius: 12px;
     cursor: pointer;
 
     font-size: 18px;
     font-weight: 600;
-    color: #c7f284;
-    background-color: hsla(83, 81%, 73%, 0.1);
+    color: rgb(46 60 44);
+    background-color: rgb(199 242 132);
 
     &:hover {
-      border-color: #c7f284;
+      color: rgb(12 20 24);
+      background-color: rgb(161 197 110);
     }
   }
 }
