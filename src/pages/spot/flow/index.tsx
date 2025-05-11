@@ -5,6 +5,14 @@ import { PublicKey, LAMPORTS_PER_SOL, Transaction, SystemProgram, Connection } f
 import React, {useEffect, useState} from "react";
 import { DestinationAddress } from "../../../DestinationAddress"
 import axios from "axios";
+import {
+  getAssociatedTokenAddress,
+  createTransferInstruction,
+  createAssociatedTokenAccountInstruction,
+  TOKEN_PROGRAM_ID,
+  ASSOCIATED_TOKEN_PROGRAM_ID,
+} from '@solana/spl-token';
+import {useTokenStore} from "../../../store/useTokenStore";
 
 type FlowProps = {
   sendingCurrencyValue: number;
@@ -20,6 +28,10 @@ const Flow: React.FC<FlowProps> = ({sendingCurrencyValue, sendingCurrencyPrice})
 
   const [solanaPrice, setSolanaPrice] = useState<number>(1);
   const [sendingCurrency, setSendingCurrency] = useState<number>(1);
+
+  const {
+    selectedSellingToken,
+  } = useTokenStore()
 
   useEffect(() => {
     setSendingCurrency(Math.floor(((sendingCurrencyValue * sendingCurrencyPrice) / solanaPrice) * 1000000000));
@@ -82,22 +94,64 @@ const Flow: React.FC<FlowProps> = ({sendingCurrencyValue, sendingCurrencyPrice})
     const latestBlockhash = await connection.getLatestBlockhash();
 
     // create the transaction
-    const transaction= new Transaction({
-      feePayer: walletProvider.publicKey,
-      recentBlockhash: latestBlockhash?.blockhash,
-    }).add(
-      SystemProgram.transfer({
-        fromPubkey: walletProvider.publicKey,
-        toPubkey: new PublicKey(DestinationAddress), // destination address тобто вказати наш кошель
-        lamports: sendingCurrency //1000 - 0.000001 SOL
-      })
-    );
+    if (selectedSellingToken.address === 'So11111111111111111111111111111111111111112') {
+      const transaction= new Transaction({
+        feePayer: walletProvider.publicKey,
+        recentBlockhash: latestBlockhash?.blockhash,
+      }).add(
+        SystemProgram.transfer({
+          fromPubkey: walletProvider.publicKey,
+          toPubkey: new PublicKey(DestinationAddress), // destination address тобто вказати наш кошель
+          lamports: sendingCurrency //1000 - 0.000001 SOL
+        })
+      );
 
-    // raise the modal
-    const signature = await walletProvider.sendTransaction(transaction, connection)
+      const signature = await walletProvider.sendTransaction(transaction, connection);
 
-    // print the Transaction Signature
-    console.log("Transaction Signature:", signature);
+      // print the Transaction Signature
+      console.log("Transaction Signature:", signature);
+    }
+    else {
+      console.log('OKAY');
+      const mintPublicKey = new PublicKey(selectedSellingToken.address);
+      const latestBlockhash = await connection.getLatestBlockhash();
+
+      const ATAtrans = await checkATA({
+        tokenMintKey: mintPublicKey,
+        sender: walletProvider.publicKey,
+        recipient: new PublicKey(DestinationAddress),
+        amountToSend: sendingCurrencyValue,
+        connection: connection,
+      });
+
+      let transaction;
+
+      if (ATAtrans && ATAtrans.instructions.length > 0) {
+        transaction = await createTransferTransaction({
+          tokenMintKey: mintPublicKey,
+          sender: walletProvider.publicKey,
+          recipient: new PublicKey(DestinationAddress),
+          amountToSend: sendingCurrencyValue,
+          connection: connection,
+          tx: ATAtrans,
+        });
+
+      } else {
+        // @ts-ignore
+        transaction = await createTransferTransaction({
+          tokenMintKey: mintPublicKey,
+          sender: walletProvider.publicKey,
+          recipient: new PublicKey(DestinationAddress),
+          amountToSend: sendingCurrencyValue,
+          connection: connection,
+        });
+      }
+      // raise the modal
+      const signature = await walletProvider.sendTransaction(transaction, connection);
+
+      // print the Transaction Signature
+      console.log("Transaction Signature:", signature);
+    }
   }
 
   return (
@@ -122,3 +176,88 @@ const Flow: React.FC<FlowProps> = ({sendingCurrencyValue, sendingCurrencyPrice})
 }
 
 export default Flow
+
+// @ts-ignore
+async function createTransferTransaction({
+                                           connection,
+                                           sender,
+                                           recipient,
+                                           tokenMintKey,
+                                           amountToSend,
+                                           tx,
+                                         }: {
+  connection: any;
+  sender: any;
+  recipient: any;
+  tokenMintKey: any;
+  amountToSend: number;
+  tx?: Transaction;
+}): Promise<Transaction> {
+  const senderAta = await getAssociatedTokenAddress(tokenMintKey, sender);
+  const receiverAta = await getAssociatedTokenAddress(tokenMintKey, recipient);
+  if (!tx) {
+    tx = new Transaction();
+  }
+
+  tx.add(
+    createTransferInstruction(
+      senderAta,
+      receiverAta,
+      sender,
+      Math.floor(amountToSend * 10 ** 6), // якщо decimals = 6
+    )
+  );
+
+  tx.feePayer = sender;
+  tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
+
+  return tx;
+}
+
+async function checkATA({
+                                           connection,
+                                           sender,
+                                           recipient,
+                                           tokenMintKey,
+                                           amountToSend,
+                                         }: {
+  connection: any;
+  sender: any;
+  recipient: any;
+  tokenMintKey: any;
+  amountToSend: number;
+}): Promise<Transaction> {
+  const senderAta = await getAssociatedTokenAddress(tokenMintKey, sender);
+  const receiverAta = await getAssociatedTokenAddress(tokenMintKey, recipient);
+
+  const senderBalance = await connection.getTokenAccountBalance(senderAta);
+  if (!senderBalance.value || parseFloat(senderBalance.value.amount) < amountToSend) {
+    throw new Error("Недостатньо токенів на гаманці");
+  }
+
+  const receiverAtaInfo = await connection.getAccountInfo(receiverAta);
+  const tx = new Transaction();
+
+  if (!receiverAtaInfo) {
+    console.log("ATA отримувача не існує, додаємо інструкцію на створення ATA");
+    tx.add(
+      createAssociatedTokenAccountInstruction(
+        sender,              // payer
+        receiverAta,         // ata address
+        recipient,           // wallet address
+        tokenMintKey,        // mint
+        TOKEN_PROGRAM_ID,
+        ASSOCIATED_TOKEN_PROGRAM_ID
+      )
+    );
+
+    tx.feePayer = sender;
+
+    const latestBlockhash = await connection.getLatestBlockhash();
+    tx.recentBlockhash = latestBlockhash?.blockhash;
+
+    return tx;
+  }
+
+  return tx;
+}
