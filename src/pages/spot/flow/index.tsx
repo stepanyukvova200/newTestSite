@@ -13,6 +13,7 @@ import {
   ASSOCIATED_TOKEN_PROGRAM_ID,
 } from '@solana/spl-token';
 import {useTokenStore} from "../../../store/useTokenStore";
+import { useWallet } from "@solana/wallet-adapter-react";
 
 type FlowProps = {
   sendingCurrencyValue: number;
@@ -28,6 +29,8 @@ const Flow: React.FC<FlowProps> = ({sendingCurrencyValue, sendingCurrencyPrice})
 
   const [solanaPrice, setSolanaPrice] = useState<number>(1);
   const [sendingCurrency, setSendingCurrency] = useState<number>(1);
+
+  const { signTransaction } = useWallet();
 
   const {
     selectedSellingToken,
@@ -95,16 +98,16 @@ const Flow: React.FC<FlowProps> = ({sendingCurrencyValue, sendingCurrencyPrice})
 
     // create the transaction
     if (selectedSellingToken.address === 'So11111111111111111111111111111111111111112') {
-      const transaction= new Transaction({
-        feePayer: walletProvider.publicKey,
-        recentBlockhash: latestBlockhash?.blockhash,
-      }).add(
+      const transaction= new Transaction().add(
         SystemProgram.transfer({
           fromPubkey: walletProvider.publicKey,
           toPubkey: new PublicKey(DestinationAddress), // destination address тобто вказати наш кошель
           lamports: sendingCurrency //1000 - 0.000001 SOL
         })
       );
+
+      transaction.feePayer = walletProvider.publicKey;
+      transaction.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
 
       const signature = await walletProvider.sendTransaction(transaction, connection);
 
